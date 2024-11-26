@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<style name="Theme.SplashScreen.ComposeScreen" parent="Theme.SplashScreen.IconBackground">
+    <item name="windowSplashScreenBackground">#EA9922</item>
+    <item name="windowSplashScreenAnimatedIcon">@drawable/ic_coctail</item>
+    <item name="postSplashScreenTheme">@style/Theme.CoctailApp</item>
+    <item name="windowSplashScreenIconBackgroundColor">#00FFFFFF</item>
+
+</style>
+
+</resources>

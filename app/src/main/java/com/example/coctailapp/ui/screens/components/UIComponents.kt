@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
@@ -45,7 +43,7 @@ fun CustomTextField(
     TextField(
 
         value = state.value,
-        onValueChange = { it -> state.value = it },
+        onValueChange = {  state.value = it },
         label = {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
@@ -69,7 +67,7 @@ fun CustomTextField(
                 IconButton(onClick = {
                     passwordVisible = !passwordVisible
                 }) {
-                    Icon(imageVector = image,contentDescription=  description, tint = Color.Gray)
+                    Icon(imageVector = image, contentDescription = description, tint = Color.Gray)
                 }
             }
         },

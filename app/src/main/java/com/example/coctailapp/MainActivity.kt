@@ -20,15 +20,15 @@ import com.example.coctailapp.ui.theme.CoctailAppTheme
 import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
-    private var splash = false
+//    private var splash = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                splash
-            }
-        }
+//        installSplashScreen().apply {
+//            setKeepOnScreenCondition {
+//                splash
+//            }
+//        }
         setContent {
 
             CoctailAppTheme {
@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
 
             }
 
-            splash = false
+//            splash = false
         }
 
     }

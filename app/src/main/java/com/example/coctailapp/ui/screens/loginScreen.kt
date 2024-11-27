@@ -3,7 +3,6 @@ package com.example.coctailapp.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,19 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -33,28 +27,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.coctailapp.R
-import com.example.coctailapp.RegisterScreen
-import com.example.coctailapp.ui.theme.Typography
+import com.example.coctailapp.ui.screens.components.CustomTextField
 
-object Font {
-}
+
 
 
 @Composable
 fun LoginScreen(navigation: ()->Unit) {
     val color = 0x7736682C
 
-    var email by remember {
+    val email = remember {
         mutableStateOf("")
     }
-    var password by remember {
+    val password = remember {
         mutableStateOf("")
     }
 
@@ -95,138 +85,12 @@ fun LoginScreen(navigation: ()->Unit) {
             }
             Spacer(Modifier.height(15.dp))
 
-            TextField(
-                value = email,
-                onValueChange = {
-                    email = it
-                },
-                label = {
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = "email",
-                            style = Typography.bodyLarge.copy(),
-                            modifier = Modifier.align(Alignment.Center) 
-                        )
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .width(41.dp),
-                colors =TextFieldColors(
-                    focusedTextColor = Color.Black,
-                    unfocusedTextColor = Color.Black,
-                    disabledTextColor = Color.Gray,
-                    errorTextColor = Color.Red,
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
-                    disabledContainerColor = Color.Gray,
-                    errorContainerColor = Color.Red,
-                    cursorColor = Color(0x2236682C),
-                    errorCursorColor = Color.Red,
-                    textSelectionColors = TextSelectionColors(
-                        handleColor = Color(color),
-                        backgroundColor = Color.White
-                    ),
-                    focusedIndicatorColor = Color(color),
-                    unfocusedIndicatorColor = Color.White,
-                    disabledIndicatorColor = Color.Gray,
-                    errorIndicatorColor = Color.Red,
-                    focusedLeadingIconColor = Color.White,
-                    unfocusedLeadingIconColor = Color.White,
-                    disabledLeadingIconColor = Color.White,
-                    errorLeadingIconColor = Color.White,
-                    focusedTrailingIconColor = Color.White,
-                    unfocusedTrailingIconColor = Color.White,
-                    disabledTrailingIconColor = Color.White,
-                    errorTrailingIconColor = Color.White,
-                    focusedLabelColor = Color(color),
-                    unfocusedLabelColor = Color.Gray,
-                    disabledLabelColor = Color.White,
-                    errorLabelColor = Color.Red,
-                    focusedPlaceholderColor = Color(color),
-                    unfocusedPlaceholderColor = Color.Gray,
-                    disabledPlaceholderColor = Color.Gray,
-                    errorPlaceholderColor = Color.Red,
-                    focusedSupportingTextColor = Color.Black,
-                    unfocusedSupportingTextColor = Color.Black,
-                    disabledSupportingTextColor = Color.White,
-                    errorSupportingTextColor = Color.White,
-                    focusedPrefixColor = Color.White,
-                    unfocusedPrefixColor = Color.Black,
-                    disabledPrefixColor = Color.White,
-                    errorPrefixColor = Color.White,
-                    focusedSuffixColor = Color.White,
-                    unfocusedSuffixColor = Color.Black,
-                    disabledSuffixColor = Color.White,
-                    errorSuffixColor = Color.White
-                )
-            )
+            CustomTextField(email, "email", color, false, KeyboardType.Email)
 
             Spacer(Modifier.height(15.dp))
 
 
-            TextField(
-                value = password,
-                onValueChange = {
-                    password = it
-                },
-                label = {
-                    Box(Modifier.fillMaxWidth()){
-                        Text("password", style = Typography.bodyLarge.copy(), modifier = Modifier.align(
-                            Alignment.Center))
-                    }
-                     },
-                modifier = Modifier.fillMaxWidth(),
-                colors =TextFieldColors(
-                    focusedTextColor = Color.Black,
-                    unfocusedTextColor = Color.Black,
-                    disabledTextColor = Color.Gray,
-                    errorTextColor = Color.Red,
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
-                    disabledContainerColor = Color.Gray,
-                    errorContainerColor = Color.Red,
-                    cursorColor = Color(0x2236682C),
-                    errorCursorColor = Color.Red,
-                    textSelectionColors = TextSelectionColors(
-                        handleColor = Color(color),
-                        backgroundColor = Color.White
-                    ),
-                    focusedIndicatorColor = Color(color),
-                    unfocusedIndicatorColor = Color.White,
-                    disabledIndicatorColor = Color.Gray,
-                    errorIndicatorColor = Color.Red,
-                    focusedLeadingIconColor = Color.White,
-                    unfocusedLeadingIconColor = Color.White,
-                    disabledLeadingIconColor = Color.White,
-                    errorLeadingIconColor = Color.White,
-                    focusedTrailingIconColor = Color.White,
-                    unfocusedTrailingIconColor = Color.White,
-                    disabledTrailingIconColor = Color.White,
-                    errorTrailingIconColor = Color.White,
-                    focusedLabelColor = Color(color),
-                    unfocusedLabelColor = Color.Gray,
-                    disabledLabelColor = Color.White,
-                    errorLabelColor = Color.Red,
-                    focusedPlaceholderColor = Color(color),
-                    unfocusedPlaceholderColor = Color.Gray,
-                    disabledPlaceholderColor = Color.Gray,
-                    errorPlaceholderColor = Color.Red,
-                    focusedSupportingTextColor = Color.Black,
-                    unfocusedSupportingTextColor = Color.Black,
-                    disabledSupportingTextColor = Color.White,
-                    errorSupportingTextColor = Color.White,
-                    focusedPrefixColor = Color.White,
-                    unfocusedPrefixColor = Color.Black,
-                    disabledPrefixColor = Color.White,
-                    errorPrefixColor = Color.White,
-                    focusedSuffixColor = Color.White,
-                    unfocusedSuffixColor = Color.Black,
-                    disabledSuffixColor = Color.White,
-                    errorSuffixColor = Color.White
-                )
-                
-            )
+            CustomTextField(password, "password", color, true , KeyboardType.Password)
 
             Spacer(Modifier.height(25.dp))
 

@@ -45,7 +45,9 @@ class MainActivity : ComponentActivity() {
                     composable<RegisterScreen> {
                         RegisterScreen(){
                             navController.navigate(LoginScreen){
-                                popUpToRouteClass
+                                popUpTo(LoginScreen){
+                                    inclusive = true
+                                }
                             }
                         }
 

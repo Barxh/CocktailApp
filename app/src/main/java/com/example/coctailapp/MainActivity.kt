@@ -14,13 +14,13 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.coctailapp.ui.screens.loginScreen
-import com.example.coctailapp.ui.screens.registerScreen
+import com.example.coctailapp.ui.screens.LoginScreen
+import com.example.coctailapp.ui.screens.RegisterScreen
 import com.example.coctailapp.ui.theme.CoctailAppTheme
 import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
-    private var splash = true
+    private var splash = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -38,10 +38,16 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController,
                     startDestination = LoginScreen){
                     composable<LoginScreen> {
-                        loginScreen(navController)
+                        LoginScreen(){
+                            navController.navigate(RegisterScreen)
+                        }
                     }
                     composable<RegisterScreen> {
-                        registerScreen(navController)
+                        RegisterScreen(){
+                            navController.navigate(LoginScreen){
+                                popUpToRouteClass
+                            }
+                        }
 
                     }
                 }

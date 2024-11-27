@@ -41,20 +41,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.coctailapp.R
 import com.example.coctailapp.RegisterScreen
-import com.example.coctailapp.ui.screens.Font.fontFamily
+import com.example.coctailapp.ui.theme.Typography
 
 object Font {
-    val fontFamily = FontFamily(
-        Font(R.font.caveat_bold, FontWeight.Bold),
-        Font(R.font.caveat_medium, FontWeight.Medium),
-        Font(R.font.caveat_regular, FontWeight.Normal),
-        Font(R.font.caveat_semibold, FontWeight.SemiBold)
-    )
 }
 
 
 @Composable
-fun loginScreen(navController: NavHostController) {
+fun LoginScreen(navigation: ()->Unit) {
     val color = 0x7736682C
 
     var email by remember {
@@ -91,12 +85,10 @@ fun loginScreen(navController: NavHostController) {
             Row {
                 Text(
                     "Lo",
-                    fontFamily = fontFamily,
                     fontSize = 28.sp
                 )
                 Text(
                     "Gin",
-                    fontFamily = fontFamily,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -112,8 +104,8 @@ fun loginScreen(navController: NavHostController) {
                     Box(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = "email",
-                            fontFamily = fontFamily,
-                            modifier = Modifier.align(Alignment.Center) // Centriranje labele
+                            style = Typography.bodyLarge.copy(),
+                            modifier = Modifier.align(Alignment.Center) 
                         )
                     }
                 },
@@ -180,7 +172,7 @@ fun loginScreen(navController: NavHostController) {
                 },
                 label = {
                     Box(Modifier.fillMaxWidth()){
-                        Text("password", fontFamily = fontFamily, modifier = Modifier.align(
+                        Text("password", style = Typography.bodyLarge.copy(), modifier = Modifier.align(
                             Alignment.Center))
                     }
                      },
@@ -261,7 +253,6 @@ fun loginScreen(navController: NavHostController) {
                     )
                     Text(
                         text = "Login",
-                        fontFamily = fontFamily,
                         color = Color(0xFF36682C),
                         fontSize = 21.sp
                     )
@@ -282,8 +273,7 @@ fun loginScreen(navController: NavHostController) {
                         .background(Color.White)
                 )
                 Text(
-                    text = "or",
-                    fontFamily = fontFamily, color = Color.White
+                    text = "or", color = Color.White
                 )
                 Spacer(
                     Modifier
@@ -298,7 +288,7 @@ fun loginScreen(navController: NavHostController) {
             Button(
                 shape = RectangleShape,
                 onClick = {
-                    navController.navigate(RegisterScreen)
+                    navigation()
 
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -321,7 +311,6 @@ fun loginScreen(navController: NavHostController) {
                     )
                     Text(
                         text = "Register",
-                        fontFamily = fontFamily,
                         color = Color.White,
                         fontSize = 21.sp
                     )

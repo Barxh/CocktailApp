@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -29,6 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.coctailapp.R
@@ -38,7 +40,7 @@ import com.example.coctailapp.ui.screens.components.CustomTextField
 
 
 @Composable
-fun LoginScreen(navigation: ()->Unit) {
+fun LoginScreen(navigateToRegisterScreen: ()->Unit) {
     val color = 0x7736682C
 
     val email = remember {
@@ -130,21 +132,13 @@ fun LoginScreen(navigation: ()->Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(
-                    Modifier
-                        .width(129.dp)
-                        .height(1.dp)
-                        .background(Color.White)
-                )
+
+                HorizontalDivider(thickness = 1.dp, color = Color.White, modifier = Modifier.weight(0.4f))
                 Text(
-                    text = "or", color = Color.White
+                    text = "or", color = Color.White, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center
                 )
-                Spacer(
-                    Modifier
-                        .width(129.dp)
-                        .height(1.dp)
-                        .background(Color.White)
-                )
+                HorizontalDivider(thickness = 1.dp, color = Color.White, modifier = Modifier.weight(0.4f))
+
             }
 
             Spacer(Modifier.height(15.dp))
@@ -152,7 +146,7 @@ fun LoginScreen(navigation: ()->Unit) {
             Button(
                 shape = RectangleShape,
                 onClick = {
-                    navigation()
+                    navigateToRegisterScreen()
 
                 },
                 colors = ButtonDefaults.buttonColors(

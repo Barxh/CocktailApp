@@ -72,8 +72,7 @@ fun CustomTextField(
             }
         },
         modifier = Modifier
-            .fillMaxWidth()
-            .width(41.dp),
+            .fillMaxWidth(),
         colors = TextFieldColors(
             focusedTextColor = Color.Black,
             unfocusedTextColor = Color.Black,

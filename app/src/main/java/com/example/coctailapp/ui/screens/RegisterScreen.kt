@@ -3,7 +3,6 @@ package com.example.coctailapp.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,19 +11,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -34,77 +29,29 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import com.example.coctailapp.LoginScreen
 import com.example.coctailapp.R
-import com.example.coctailapp.ui.screens.Font.fontFamily
+import com.example.coctailapp.ui.screens.components.CustomTextField
 
 
 @Composable
-fun registerScreen(navController: NavHostController) {
+fun RegisterScreen(navigateToLoginScreen: ()->Unit) {
 
-    val color = 0x774A1413
 
-    var name by remember{
+    val name = remember{
         mutableStateOf("")
     }
-    var email by remember {
+    val email = remember {
         mutableStateOf("")
     }
-    var password by remember {
+    val password = remember {
         mutableStateOf("")
     }
 
-    val textFieldColors = TextFieldColors(
-        focusedTextColor = Color.Black,
-        unfocusedTextColor = Color.Black,
-        disabledTextColor = Color.Gray,
-        errorTextColor = Color.Red,
-        focusedContainerColor = Color.White,
-        unfocusedContainerColor = Color.White,
-        disabledContainerColor = Color.Gray,
-        errorContainerColor = Color.Red,
-        cursorColor = Color(color),
-        errorCursorColor = Color.Red,
-        textSelectionColors = TextSelectionColors(
-            handleColor = Color(color),
-            backgroundColor = Color.White
-        ),
-        focusedIndicatorColor = Color(color),
-        unfocusedIndicatorColor = Color.White,
-        disabledIndicatorColor = Color.Gray,
-        errorIndicatorColor = Color.Red,
-        focusedLeadingIconColor = Color.White,
-        unfocusedLeadingIconColor = Color.White,
-        disabledLeadingIconColor = Color.White,
-        errorLeadingIconColor = Color.White,
-        focusedTrailingIconColor = Color.White,
-        unfocusedTrailingIconColor = Color.White,
-        disabledTrailingIconColor = Color.White,
-        errorTrailingIconColor = Color.White,
-        focusedLabelColor = Color(color),
-        unfocusedLabelColor = Color.Gray,
-        disabledLabelColor = Color.White,
-        errorLabelColor = Color.Red,
-        focusedPlaceholderColor = Color(color),
-        unfocusedPlaceholderColor = Color.Gray,
-        disabledPlaceholderColor = Color.Gray,
-        errorPlaceholderColor = Color.Red,
-        focusedSupportingTextColor = Color.Black,
-        unfocusedSupportingTextColor = Color.Black,
-        disabledSupportingTextColor = Color.White,
-        errorSupportingTextColor = Color.White,
-        focusedPrefixColor = Color.White,
-        unfocusedPrefixColor = Color.Black,
-        disabledPrefixColor = Color.White,
-        errorPrefixColor = Color.White,
-        focusedSuffixColor = Color.White,
-        unfocusedSuffixColor = Color.Black,
-        disabledSuffixColor = Color.White,
-        errorSuffixColor = Color.White
-    )
+
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -133,12 +80,10 @@ fun registerScreen(navController: NavHostController) {
             Row {
                 Text(
                     "Regi",
-                    fontFamily = fontFamily,
                     fontSize = 28.sp
                 )
                 Text(
                     "Star",
-                    fontFamily = fontFamily,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -146,64 +91,14 @@ fun registerScreen(navController: NavHostController) {
             Spacer(Modifier.height(15.dp))
 
 
-            TextField(
-                value = name,
-                onValueChange = {
-                    name = it
-                },
-                label = {
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = "name",
-                            fontFamily = fontFamily,
-                            modifier = Modifier.align(Alignment.Center) // Centriranje labele
-                        )
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .width(41.dp),
-                colors = textFieldColors
-            )
+            CustomTextField(name, "name", R.color.cola_brown, false , KeyboardType.Text)
             Spacer(Modifier.height(15.dp))
-            TextField(
-                value = email,
-                onValueChange = {
-                    email = it
-                },
-                label = {
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = "email",
-                            fontFamily = fontFamily,
-                            modifier = Modifier.align(Alignment.Center) // Centriranje labele
-                        )
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .width(41.dp),
-                colors = textFieldColors
-            )
+            CustomTextField(email, "email", R.color.cola_brown, false, KeyboardType.Email)
 
             Spacer(Modifier.height(15.dp))
 
 
-            TextField(
-                value = password,
-                onValueChange = {
-                    password = it
-                },
-                label = {
-                    Box(Modifier.fillMaxWidth()){
-                        Text("password", fontFamily = fontFamily, modifier = Modifier.align(
-                            Alignment.Center))
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = textFieldColors
-
-            )
+            CustomTextField(password, "password", R.color.cola_brown, true, KeyboardType.Password)
 
             Spacer(Modifier.height(25.dp))
 
@@ -229,7 +124,6 @@ fun registerScreen(navController: NavHostController) {
                     )
                     Text(
                         text = "Register",
-                        fontFamily = fontFamily,
                         color = Color(0xFF4A1413),
                         fontSize = 21.sp
                     )
@@ -243,22 +137,11 @@ fun registerScreen(navController: NavHostController) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(
-                    Modifier
-                        .width(129.dp)
-                        .height(1.dp)
-                        .background(Color.White)
-                )
+                HorizontalDivider(thickness = 1.dp, color = Color.White, modifier = Modifier.weight(0.4f))
                 Text(
-                    text = "or",
-                    fontFamily = fontFamily, color = Color.White
+                    text = "or", color = Color.White, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center
                 )
-                Spacer(
-                    Modifier
-                        .width(129.dp)
-                        .height(1.dp)
-                        .background(Color.White)
-                )
+                HorizontalDivider(thickness = 1.dp, color = Color.White, modifier = Modifier.weight(0.4f))
             }
 
             Spacer(Modifier.height(15.dp))
@@ -267,7 +150,7 @@ fun registerScreen(navController: NavHostController) {
                 shape = RectangleShape,
                 onClick = {
 
-                    navController.navigate(LoginScreen)
+                    navigateToLoginScreen()
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0x11FFFFFF),
@@ -289,7 +172,6 @@ fun registerScreen(navController: NavHostController) {
                     )
                     Text(
                         text = "Login",
-                        fontFamily = fontFamily,
                         color = Color.White,
                         fontSize = 21.sp
                     )

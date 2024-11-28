@@ -40,7 +40,6 @@ import com.example.coctailapp.ui.screens.components.CustomTextField
 @Composable
 fun RegisterScreen(navigateToLoginScreen: ()->Unit) {
 
-    val color = 0x774A1413
 
     val name = remember{
         mutableStateOf("")
@@ -92,14 +91,14 @@ fun RegisterScreen(navigateToLoginScreen: ()->Unit) {
             Spacer(Modifier.height(15.dp))
 
 
-            CustomTextField(name, "name", color, false , KeyboardType.Text)
+            CustomTextField(name, "name", R.color.cola_brown, false , KeyboardType.Text)
             Spacer(Modifier.height(15.dp))
-            CustomTextField(email, "email", color, false, KeyboardType.Email)
+            CustomTextField(email, "email", R.color.cola_brown, false, KeyboardType.Email)
 
             Spacer(Modifier.height(15.dp))
 
 
-            CustomTextField(password, "password", color, true, KeyboardType.Password)
+            CustomTextField(password, "password", R.color.cola_brown, true, KeyboardType.Password)
 
             Spacer(Modifier.height(25.dp))
 

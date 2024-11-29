@@ -16,8 +16,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,21 +31,35 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.coctailapp.R
+import com.example.coctailapp.model.RegisterEvent
+import com.example.coctailapp.model.RegisterViewModel
 import com.example.coctailapp.ui.screens.components.CustomTextField
 
 
 @Composable
-fun RegisterScreen(navigateToLoginScreen: ()->Unit) {
+fun RegisterScreen(
+    navigateToLoginScreen: () -> Unit, registerViewModel: RegisterViewModel = hiltViewModel(),
+    navigateToMainScreen: () -> Unit
+) {
 
 
-    val name = remember{
+    val registerEvent by registerViewModel.registerState.collectAsStateWithLifecycle()
+
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+    val name = remember {
         mutableStateOf("")
     }
     val email = remember {
@@ -50,9 +68,29 @@ fun RegisterScreen(navigateToLoginScreen: ()->Unit) {
     val password = remember {
         mutableStateOf("")
     }
+    val emailIsError by registerViewModel.emailError.collectAsStateWithLifecycle()
+    val passwordIsError by registerViewModel.passwordError.collectAsStateWithLifecycle()
 
+    LaunchedEffect(registerEvent) {
+        when(registerEvent){
+            RegisterEvent.RegistrationAwait -> {
+                //Do nothing
+            }
+            is RegisterEvent.RegistrationFailed -> {
+                snackbarHostState.showSnackbar((registerEvent as RegisterEvent.RegistrationFailed).message)
 
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                registerViewModel.setRegistrationState(RegisterEvent.RegistrationAwait)
+
+            }
+            RegisterEvent.RegistrationSuccessful -> {
+                navigateToMainScreen()
+            }
+        }
+    }
+
+    Scaffold(modifier = Modifier.fillMaxSize(), snackbarHost = {
+        SnackbarHost(snackbarHostState)
+    }) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -65,7 +103,7 @@ fun RegisterScreen(navigateToLoginScreen: ()->Unit) {
 
                         ),
                         start = Offset(0f, 2000f),
-                        end = Offset(0f,0f)
+                        end = Offset(0f, 0f)
                     )
                 )
                 .padding(
@@ -91,20 +129,23 @@ fun RegisterScreen(navigateToLoginScreen: ()->Unit) {
             Spacer(Modifier.height(15.dp))
 
 
-            CustomTextField(name, "name", R.color.cola_brown, false , KeyboardType.Text)
+            CustomTextField(name, stringResource(R.string.name), colorResource(R.color.cola_brown), false, KeyboardType.Text, false)
             Spacer(Modifier.height(15.dp))
-            CustomTextField(email, "email", R.color.cola_brown, false, KeyboardType.Email)
+            CustomTextField(email, stringResource(R.string.email), colorResource( R.color.cola_brown), false, KeyboardType.Email, emailIsError)
 
             Spacer(Modifier.height(15.dp))
 
 
-            CustomTextField(password, "password", R.color.cola_brown, true, KeyboardType.Password)
+            CustomTextField(password, stringResource(R.string.password),
+                colorResource(R.color.cola_brown), true, KeyboardType.Password, passwordIsError)
 
             Spacer(Modifier.height(25.dp))
 
             Button(
                 onClick = {
 
+
+                    registerViewModel.registerUser(name.value, email.value, password.value)
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
@@ -137,11 +178,22 @@ fun RegisterScreen(navigateToLoginScreen: ()->Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                HorizontalDivider(thickness = 1.dp, color = Color.White, modifier = Modifier.weight(0.4f))
-                Text(
-                    text = "or", color = Color.White, modifier = Modifier.weight(0.2f), textAlign = TextAlign.Center
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.White,
+                    modifier = Modifier.weight(0.4f)
                 )
-                HorizontalDivider(thickness = 1.dp, color = Color.White, modifier = Modifier.weight(0.4f))
+                Text(
+                    text = "or",
+                    color = Color.White,
+                    modifier = Modifier.weight(0.2f),
+                    textAlign = TextAlign.Center
+                )
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.White,
+                    modifier = Modifier.weight(0.4f)
+                )
             }
 
             Spacer(Modifier.height(15.dp))

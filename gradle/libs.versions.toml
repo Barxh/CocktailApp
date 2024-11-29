@@ -12,6 +12,9 @@ coreSplashscreen = "1.0.1"
 foundation = "1.7.5"
 navVersion = "2.8.4"
 serialization = "1.7.3"
+hilt= "2.51.1"
+gson = "2.10.1"
+hilt-navigation = "1.2.0"
 
 [libraries]
 
@@ -35,8 +38,15 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-foudation= { group = "androidx.compose.foundation", name = "foundation", version.ref="foundation"}
 
+dagger-hilt = {module= "com.google.dagger:hilt-android", version.ref = "hilt"}
+dagger-hilt-compiler = {module = "com.google.dagger:hilt-compiler", version.ref = "hilt"}
+google-code-gson = {module = "com.google.code.gson:gson", version.ref = "gson"}
+hilt-navigation = {module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation"}
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+jetbrains-kotlin-kapt = {id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin"}

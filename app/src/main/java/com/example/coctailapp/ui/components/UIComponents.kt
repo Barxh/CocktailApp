@@ -1,4 +1,4 @@
-package com.example.coctailapp.ui.screens.components
+package com.example.coctailapp.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

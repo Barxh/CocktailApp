@@ -1,4 +1,4 @@
-package com.example.coctailapp.model
+package com.example.coctailapp.ui.screens.register
 
 sealed interface RegisterEvent {
 

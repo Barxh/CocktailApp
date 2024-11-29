@@ -1,4 +1,4 @@
-package com.example.coctailapp.ui.screens
+package com.example.coctailapp.ui.screens.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,8 +1,9 @@
-package com.example.coctailapp.model
+package com.example.coctailapp.ui.screens.register
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
+import com.example.coctailapp.model.User
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -8,9 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.coctailapp.ui.navigation.Destinations.*
-import com.example.coctailapp.ui.screens.LoginScreen
-import com.example.coctailapp.ui.screens.MainScreen
-import com.example.coctailapp.ui.screens.RegisterScreen
+import com.example.coctailapp.ui.screens.login.LoginScreen
+import com.example.coctailapp.ui.screens.main.MainScreen
+import com.example.coctailapp.ui.screens.register.RegisterScreen
 import com.example.coctailapp.ui.theme.CoctailAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 

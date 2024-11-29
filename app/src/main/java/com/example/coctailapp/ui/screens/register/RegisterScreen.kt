@@ -1,4 +1,4 @@
-package com.example.coctailapp.ui.screens
+package com.example.coctailapp.ui.screens.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,7 +16,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -43,50 +42,53 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.coctailapp.R
-import com.example.coctailapp.model.LoginEvent
-import com.example.coctailapp.model.LoginViewModel
-import com.example.coctailapp.ui.screens.components.CustomTextField
+import com.example.coctailapp.ui.components.CustomTextField
 
 
 @Composable
-fun LoginScreen(
-    navigateToRegisterScreen: () -> Unit,
-    loginViewModel: LoginViewModel = hiltViewModel(),
+fun RegisterScreen(
+    navigateToLoginScreen: () -> Unit, registerViewModel: RegisterViewModel = hiltViewModel(),
     navigateToMainScreen: () -> Unit
 ) {
 
-    val loginEvent by loginViewModel.loginState.collectAsStateWithLifecycle()
+
+    val registerEvent by registerViewModel.registerState.collectAsStateWithLifecycle()
+
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+    val name = remember {
+        mutableStateOf("")
+    }
     val email = remember {
         mutableStateOf("")
     }
     val password = remember {
         mutableStateOf("")
     }
-    val snackbarHostState = remember {
-        SnackbarHostState()
-    }
-    LaunchedEffect(loginEvent) {
-        when(loginEvent){
-            LoginEvent.LoginSuccess -> {
-            navigateToMainScreen()
-        }
-            is LoginEvent.LoginFailed -> {
+    val emailIsError by registerViewModel.emailError.collectAsStateWithLifecycle()
+    val passwordIsError by registerViewModel.passwordError.collectAsStateWithLifecycle()
 
-                snackbarHostState.showSnackbar((loginEvent as LoginEvent.LoginFailed).message,
-                     withDismissAction = true, duration = SnackbarDuration.Indefinite)
-                loginViewModel.setState(LoginEvent.LoginWait)
+    LaunchedEffect(registerEvent) {
+        when(registerEvent){
+            RegisterEvent.RegistrationAwait -> {
+                //Do nothing
+            }
+            is RegisterEvent.RegistrationFailed -> {
+                snackbarHostState.showSnackbar((registerEvent as RegisterEvent.RegistrationFailed).message)
+
+                registerViewModel.setRegistrationState(RegisterEvent.RegistrationAwait)
 
             }
-
-            LoginEvent.LoginWait -> {
-                // Do nothing
+            RegisterEvent.RegistrationSuccessful -> {
+                navigateToMainScreen()
             }
         }
     }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        snackbarHost = { SnackbarHost(snackbarHostState) }) { innerPadding ->
+    Scaffold(modifier = Modifier.fillMaxSize(), snackbarHost = {
+        SnackbarHost(snackbarHostState)
+    }) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -94,11 +96,11 @@ fun LoginScreen(
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
-                            Color(0xFF36682C),
-                            Color(0XFFBDE8D5)
+                            Color(0xFF4A1413),
+                            Color(0XFFE7CE8F)
 
                         ),
-                        start = Offset(0f, 1200f),
+                        start = Offset(0f, 2000f),
                         end = Offset(0f, 0f)
                     )
                 )
@@ -113,35 +115,35 @@ fun LoginScreen(
 
             Row {
                 Text(
-                    "Lo",
+                    "Regi",
                     fontSize = 28.sp
                 )
                 Text(
-                    "Gin",
+                    "Star",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
             Spacer(Modifier.height(15.dp))
 
-            CustomTextField(email, stringResource(R.string.email), colorResource(R.color.navy_green), false, KeyboardType.Email, false)
+
+            CustomTextField(name, stringResource(R.string.name), colorResource(R.color.cola_brown), false, KeyboardType.Text, false)
+            Spacer(Modifier.height(15.dp))
+            CustomTextField(email, stringResource(R.string.email), colorResource( R.color.cola_brown), false, KeyboardType.Email, emailIsError)
 
             Spacer(Modifier.height(15.dp))
 
 
-            CustomTextField(
-                password,
-                stringResource(R.string.password), colorResource(R.color.navy_green),
-                true,
-                KeyboardType.Password,
-                false
-            )
+            CustomTextField(password, stringResource(R.string.password),
+                colorResource(R.color.cola_brown), true, KeyboardType.Password, passwordIsError)
 
             Spacer(Modifier.height(25.dp))
 
             Button(
                 onClick = {
-                    loginViewModel.login(email.value, password.value)
+
+
+                    registerViewModel.registerUser(name.value, email.value, password.value)
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
@@ -154,14 +156,14 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_login),
+                        painter = painterResource(R.drawable.ic_register),
                         contentDescription = null,
 
-                        tint = Color(0xFF36682C)
+                        tint = Color(0xFF4A1413)
                     )
                     Text(
-                        text = "Login",
-                        color = Color(0xFF36682C),
+                        text = "Register",
+                        color = Color(0xFF4A1413),
                         fontSize = 21.sp
                     )
                 }
@@ -174,7 +176,6 @@ fun LoginScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-
                 HorizontalDivider(
                     thickness = 1.dp,
                     color = Color.White,
@@ -191,7 +192,6 @@ fun LoginScreen(
                     color = Color.White,
                     modifier = Modifier.weight(0.4f)
                 )
-
             }
 
             Spacer(Modifier.height(15.dp))
@@ -199,8 +199,8 @@ fun LoginScreen(
             Button(
                 shape = RectangleShape,
                 onClick = {
-                    navigateToRegisterScreen()
 
+                    navigateToLoginScreen()
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0x11FFFFFF),
@@ -215,13 +215,13 @@ fun LoginScreen(
                         .height(44.dp)
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_register),
+                        painter = painterResource(R.drawable.ic_login),
                         contentDescription = null,
 
                         tint = Color.White
                     )
                     Text(
-                        text = "Register",
+                        text = "Login",
                         color = Color.White,
                         fontSize = 21.sp
                     )
@@ -230,20 +230,19 @@ fun LoginScreen(
                 }
 
             }
-            Spacer(Modifier.height(50.dp))
+            Spacer(Modifier.height(30.dp))
 
             Image(
-                painter = painterResource(R.drawable.conctal_gin),
+                painter = painterResource(R.drawable.star_coctail),
                 contentDescription = "Photo of gin tonic",
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier
-                    .width(121.dp)
-                    .height(175.dp)
+                    .width(90.dp)
+                    .height(141.dp)
             )
 
 
         }
 
     }
-
 }

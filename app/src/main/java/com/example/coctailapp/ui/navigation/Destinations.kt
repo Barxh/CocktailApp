@@ -9,4 +9,6 @@ sealed class Destinations {
     @Serializable
     object RegisterScreen
 
+    @Serializable
+    object MainScreen
 }

@@ -1,8 +1,7 @@
-package com.example.coctailapp.ui.screens.components
+package com.example.coctailapp.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
@@ -25,14 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
 import com.example.coctailapp.ui.theme.Typography
 
 
 @Composable
 fun CustomTextField(
-    state: MutableState<String>, label: String, color: Int,
-    isPasswordField: Boolean, keyboardType: KeyboardType
+    state: MutableState<String>, label: String, color: Color ,
+    isPasswordField: Boolean, keyboardType: KeyboardType, isError: Boolean
 ) {
 
     var passwordVisible by remember {
@@ -77,18 +75,18 @@ fun CustomTextField(
             focusedTextColor = Color.Black,
             unfocusedTextColor = Color.Black,
             disabledTextColor = Color.Gray,
-            errorTextColor = Color.Red,
+            errorTextColor = Color.Black,
             focusedContainerColor = Color.White,
             unfocusedContainerColor = Color.White,
             disabledContainerColor = Color.Gray,
-            errorContainerColor = Color.Red,
-            cursorColor = Color(color),
-            errorCursorColor = Color.Red,
+            errorContainerColor = Color.White,
+            cursorColor = color,
+            errorCursorColor = Color.Gray,
             textSelectionColors = TextSelectionColors(
-                handleColor = Color(color),
+                handleColor = color,
                 backgroundColor = Color.White
             ),
-            focusedIndicatorColor = Color(color),
+            focusedIndicatorColor = color,
             unfocusedIndicatorColor = Color.White,
             disabledIndicatorColor = Color.Gray,
             errorIndicatorColor = Color.Red,
@@ -100,27 +98,28 @@ fun CustomTextField(
             unfocusedTrailingIconColor = Color.White,
             disabledTrailingIconColor = Color.White,
             errorTrailingIconColor = Color.White,
-            focusedLabelColor = Color(color),
+            focusedLabelColor = color,
             unfocusedLabelColor = Color.Gray,
             disabledLabelColor = Color.White,
             errorLabelColor = Color.Red,
-            focusedPlaceholderColor = Color(color),
+            focusedPlaceholderColor = color,
             unfocusedPlaceholderColor = Color.Gray,
             disabledPlaceholderColor = Color.Gray,
             errorPlaceholderColor = Color.Red,
             focusedSupportingTextColor = Color.Black,
             unfocusedSupportingTextColor = Color.Black,
             disabledSupportingTextColor = Color.White,
-            errorSupportingTextColor = Color.White,
+            errorSupportingTextColor = Color.Red,
             focusedPrefixColor = Color.White,
             unfocusedPrefixColor = Color.Black,
             disabledPrefixColor = Color.White,
-            errorPrefixColor = Color.White,
+            errorPrefixColor = Color.Red,
             focusedSuffixColor = Color.White,
             unfocusedSuffixColor = Color.Black,
             disabledSuffixColor = Color.White,
-            errorSuffixColor = Color.White
-        )
+            errorSuffixColor = Color.Red
+        ),
+        isError = isError
     )
 
 

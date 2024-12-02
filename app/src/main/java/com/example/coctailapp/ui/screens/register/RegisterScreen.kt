@@ -115,11 +115,11 @@ fun RegisterScreen(
 
             Row {
                 Text(
-                    "Regi",
+                    stringResource(R.string.regi),
                     fontSize = 28.sp
                 )
                 Text(
-                    "Star",
+                    stringResource(R.string.star),
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -162,7 +162,7 @@ fun RegisterScreen(
                         tint = Color(0xFF4A1413)
                     )
                     Text(
-                        text = "Register",
+                        text = stringResource(R.string.register),
                         color = Color(0xFF4A1413),
                         fontSize = 21.sp
                     )
@@ -221,7 +221,7 @@ fun RegisterScreen(
                         tint = Color.White
                     )
                     Text(
-                        text = "Login",
+                        text = stringResource(R.string.login),
                         color = Color.White,
                         fontSize = 21.sp
                     )
@@ -234,7 +234,7 @@ fun RegisterScreen(
 
             Image(
                 painter = painterResource(R.drawable.star_coctail),
-                contentDescription = "Photo of gin tonic",
+                contentDescription = stringResource(R.string.starImageDescription),
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .width(90.dp)

@@ -21,9 +21,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import com.example.coctailapp.R
 import com.example.coctailapp.ui.theme.Typography
 
 
@@ -60,7 +62,9 @@ fun CustomTextField(
 
                 val image = if (passwordVisible) Icons.Filled.Visibility
                 else Icons.Filled.VisibilityOff
-                val description = if (passwordVisible) "Hide password" else "Show password"
+                val description = if (passwordVisible)
+                    stringResource(R.string.trailingIconDescriptionHide)
+                else stringResource(R.string.trailingIconDescriptionShow)
 
                 IconButton(onClick = {
                     passwordVisible = !passwordVisible

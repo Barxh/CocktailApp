@@ -111,11 +111,11 @@ fun LoginScreen(
 
             Row {
                 Text(
-                    "Lo",
+                    stringResource(R.string.lo),
                     fontSize = 28.sp
                 )
                 Text(
-                    "Gin",
+                    stringResource(R.string.gin),
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -158,7 +158,7 @@ fun LoginScreen(
                         tint = Color(0xFF36682C)
                     )
                     Text(
-                        text = "Login",
+                        text = stringResource(R.string.login),
                         color = Color(0xFF36682C),
                         fontSize = 21.sp
                     )
@@ -219,7 +219,7 @@ fun LoginScreen(
                         tint = Color.White
                     )
                     Text(
-                        text = "Register",
+                        text = stringResource(R.string.register),
                         color = Color.White,
                         fontSize = 21.sp
                     )
@@ -232,7 +232,7 @@ fun LoginScreen(
 
             Image(
                 painter = painterResource(R.drawable.conctal_gin),
-                contentDescription = "Photo of gin tonic",
+                contentDescription = stringResource(R.string.ginImageDescription),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .width(121.dp)

@@ -4,4 +4,23 @@
     <string name="name">name</string>
     <string name="email">email</string>
     <string name="password">password</string>
+    <string name="cocktails">Cocktails</string>
+    <string name="shoppingList">Shopping list</string>
+    <string name="profile">Profile</string>
+    <string name="ginImageDescription">Photo of gin tonic</string>
+    <string name="starImageDescription">Photo of star cocktail</string>
+    <string name="login">Login</string>
+    <string name="lo">Lo</string>
+    <string name="gin">Gin</string>
+    <string name="regi">Regi</string>
+    <string name="register">Register</string>
+    <string name="star">Star</string>
+    <string name="trailingIconDescriptionHide">Hide password</string>
+    <string name="trailingIconDescriptionShow">Show password</string>
+    <string name="badInputErrorMessage">Please populate all fields</string>
+    <string name="invalidEmail">Invalid email! Please enter valid email.</string>
+    <string name="invalidPassword">Invalid password</string>
+    <string name="invalidPatternPassword">Please enter password with minimum one letter, minimum one number, minimum one special character" +
+                        " that has more than eight characters</string>
+
 </resources>

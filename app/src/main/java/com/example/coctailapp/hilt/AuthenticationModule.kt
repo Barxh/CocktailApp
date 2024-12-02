@@ -19,4 +19,6 @@ object AuthenticationModule {
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
         context.getSharedPreferences("authentication", Context.MODE_PRIVATE)
+
+
 }

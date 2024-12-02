@@ -55,10 +55,10 @@ fun LoginScreen(
 
     val loginEvent by loginViewModel.loginState.collectAsStateWithLifecycle()
     val email = remember {
-        mutableStateOf("")
+        mutableStateOf("nikola")
     }
     val password = remember {
-        mutableStateOf("")
+        mutableStateOf("nikola")
     }
     val snackbarHostState = remember {
         SnackbarHostState()

@@ -1,18 +1,22 @@
 package com.example.coctailapp.ui.screens.register
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
+import com.example.coctailapp.R
 import com.example.coctailapp.model.User
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(private val sharedPreferences: SharedPreferences) :
+class RegisterViewModel @Inject constructor(private val sharedPreferences: SharedPreferences,
+    @ApplicationContext val context: Context) :
     ViewModel() {
 
 
@@ -31,22 +35,20 @@ class RegisterViewModel @Inject constructor(private val sharedPreferences: Share
 
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
 
-            _registerState.value = RegisterEvent.RegistrationFailed("Please populate all fields")
+            _registerState.value = RegisterEvent.RegistrationFailed(context.getString(R.string.badInputErrorMessage))
             return
         }
 
         if (!Regex(emailRegex).matches(email)) {
 
             _registerState.value =
-                RegisterEvent.RegistrationFailed("Invalid email! Please enter valid email.")
+                RegisterEvent.RegistrationFailed(context.getString(R.string.invalidEmail))
             _emailError.value = true
             return
         }
 
         if (!Regex(passwordRegex).matches(password)) {
-            _registerState.value = RegisterEvent.RegistrationFailed(
-                "Please enter password with minimum one letter, minimum one number, minimum one special character" +
-                        " that has more than eight characters"
+            _registerState.value = RegisterEvent.RegistrationFailed(context.getString(R.string.invalidPatternPassword)
             )
             _emailError.value = false
             _passwordError.value = true

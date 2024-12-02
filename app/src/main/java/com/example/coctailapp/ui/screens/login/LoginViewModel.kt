@@ -1,17 +1,22 @@
 package com.example.coctailapp.ui.screens.login
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
+import com.example.coctailapp.R
 import com.example.coctailapp.model.User
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val sharedPreferences: SharedPreferences) : ViewModel(){
+class LoginViewModel @Inject constructor(private val sharedPreferences: SharedPreferences,
+                                          @ApplicationContext val context: Context
+) : ViewModel(){
 
     private var _loginState = MutableStateFlow<LoginEvent>(LoginEvent.LoginWait)
     val loginState = _loginState.asStateFlow()
@@ -21,7 +26,7 @@ class LoginViewModel @Inject constructor(private val sharedPreferences: SharedPr
 
         if (email.isEmpty() || password.isEmpty()) {
 
-            _loginState.value = LoginEvent.LoginFailed("Please enter email and password")
+            _loginState.value = LoginEvent.LoginFailed(context.getString(R.string.badInputErrorMessage))
             return
         }
 
@@ -30,7 +35,7 @@ class LoginViewModel @Inject constructor(private val sharedPreferences: SharedPr
 
         if (userString == null) {
 
-            _loginState.value = LoginEvent.LoginFailed("Invalid email")
+            _loginState.value = LoginEvent.LoginFailed(context.getString(R.string.invalidEmail))
             return
 
 
@@ -42,8 +47,9 @@ class LoginViewModel @Inject constructor(private val sharedPreferences: SharedPr
             _loginState.value = LoginEvent.LoginSuccess
         }
 
+
         else
-            _loginState.value = LoginEvent.LoginFailed("Invalid password")
+            _loginState.value = LoginEvent.LoginFailed(context.getString(R.string.invalidPassword))
 
     }
 

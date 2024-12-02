@@ -17,4 +17,10 @@
     <string name="star">Star</string>
     <string name="trailingIconDescriptionHide">Hide password</string>
     <string name="trailingIconDescriptionShow">Show password</string>
+    <string name="badInputErrorMessage">Please populate all fields</string>
+    <string name="invalidEmail">Invalid email! Please enter valid email.</string>
+    <string name="invalidPassword">Invalid password</string>
+    <string name="invalidPatternPassword">Please enter password with minimum one letter, minimum one number, minimum one special character" +
+                        " that has more than eight characters</string>
+
 </resources>

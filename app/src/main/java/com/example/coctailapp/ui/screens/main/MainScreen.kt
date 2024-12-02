@@ -1,6 +1,5 @@
 package com.example.coctailapp.ui.screens.main
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,12 +39,10 @@ fun MainScreen(mainViewModel: MainViewModel = hiltViewModel()) {
 
     val selectedBottomNavigationItem = mainViewModel.selectedBottomNavigationItem.collectAsStateWithLifecycle()
     val bottomNavigationItems = listOf(
-        BottomNavigationItem("Cocktails", ImageVector.vectorResource(R.drawable.ic_cocktail)),
-        BottomNavigationItem("Shopping list", Icons.Outlined.ShoppingBasket),
-        BottomNavigationItem("Profile", Icons.Outlined.Person)
+        BottomNavigationItem(stringResource(R.string.cocktails), ImageVector.vectorResource(R.drawable.ic_cocktail)),
+        BottomNavigationItem(stringResource(R.string.shoppingList), Icons.Outlined.ShoppingBasket),
+        BottomNavigationItem(stringResource(R.string.profile), Icons.Outlined.Person)
         )
-
-    Log.d("Icon", Icons.Outlined.ShoppingBasket.defaultWidth.toString())
 
     Scaffold(modifier = Modifier.fillMaxSize(),
         bottomBar = {

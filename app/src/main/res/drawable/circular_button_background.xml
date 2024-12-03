@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:viewportWidth="36"
+    android:viewportHeight="36"
+    android:width="36dp"
+    android:height="36dp">
+    <!-- Ovalna pozadina sa crvenom bojom -->
+    <path
+        android:fillColor="#941212"
+        android:pathData="M18,0 C27.94,0 36,8.06 36,18 C36,27.94 27.94,36 18,36 C8.06,36 0,27.94 0,18 C0,8.06 8.06,0 18,0 Z"/>
+</vector>

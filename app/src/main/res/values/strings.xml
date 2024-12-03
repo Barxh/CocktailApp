@@ -1,14 +1,16 @@
 <resources>
     <string name="app_name">CoctailApp</string>
-    <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="name">name</string>
     <string name="email">email</string>
     <string name="password">password</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
     <string name="cocktails">Cocktails</string>
     <string name="shoppingList">Shopping list</string>
     <string name="profile">Profile</string>
     <string name="ginImageDescription">Photo of gin tonic</string>
     <string name="starImageDescription">Photo of star cocktail</string>
+    <string name="cocktailImageDescription">Photo of a cocktail</string>
     <string name="login">Login</string>
     <string name="lo">Lo</string>
     <string name="gin">Gin</string>
@@ -22,5 +24,13 @@
     <string name="invalidPassword">Invalid password</string>
     <string name="invalidPatternPassword">Please enter password with minimum one letter, minimum one number, minimum one special character" +
                         " that has more than eight characters</string>
+    <string name="internetErrorMessage">Sorry, something went wrong! Please check your internet connection</string>
+    <string name="httpErrorMessage">Sorry, something went wrong!</string>
+    <string name="emptyCocktailsListErrorMessage">Sorry, there is no cocktail with such attributes</string>
+
+
+
+
+
 
 </resources>

@@ -43,6 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.coctailapp.R
 import com.example.coctailapp.model.CocktailsPreview
+import com.example.coctailapp.ui.screens.main.content.cocktails.CocktailsFetchingEvent.SuccessEvent
 import com.example.coctailapp.ui.theme.PrimaryColor
 import com.example.coctailapp.ui.theme.SecondaryColor
 import com.example.coctailapp.ui.theme.TertiaryColor
@@ -55,7 +56,7 @@ fun CocktailsContent(
     cocktailsContentViewModel: CocktailsContentViewModel = hiltViewModel()
 ) {
 
-    val cocktailsList = cocktailsContentViewModel.cocktailsList.collectAsStateWithLifecycle()
+
     val fetchingStatus = cocktailsContentViewModel.dataFetchingEvent.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -109,9 +110,11 @@ fun CocktailsContent(
             when(fetchingStatus.value){
                 is CocktailsFetchingEvent.ErrorEvent -> {
                     ErrorScreen((fetchingStatus.value as CocktailsFetchingEvent.ErrorEvent).errorMessage)
+                    cocktailsContentViewModel.retryCocktailsPreviewFetching()
                 }
                 CocktailsFetchingEvent.LoadingEvent -> LoadingScreen()
-                CocktailsFetchingEvent.SuccessEvent -> CocktailsListScreen(cocktailsList.value)
+                is SuccessEvent -> CocktailsListScreen(
+                    (fetchingStatus.value as SuccessEvent).cocktailsList)
             }
         }
     }
@@ -128,7 +131,7 @@ fun LoadingScreen(){
 @Composable
 fun ErrorScreen(errorMessage: String){
     Box (Modifier.fillMaxSize()){
-        Text(text = errorMessage, modifier = Modifier.align(Alignment.Center))
+        Text(text = errorMessage, modifier = Modifier.align(Alignment.Center).padding(20.dp), textAlign = TextAlign.Center)
     }
 }
 

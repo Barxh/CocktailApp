@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil3.network.HttpException
 import com.example.coctailapp.R
-import com.example.coctailapp.model.CocktailsPreview
 import com.example.coctailapp.network.CocktailsApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,28 +20,28 @@ import javax.inject.Inject
 class CocktailsContentViewModel @Inject constructor(private val cocktailsApi: CocktailsApi,
     @ApplicationContext val context : Context): ViewModel() {
 
-    private var _cocktailsList = MutableStateFlow(emptyList<CocktailsPreview>())
-    val cocktailsList = _cocktailsList.asStateFlow()
+
 
 
     private var _dataFetchingState = MutableStateFlow<CocktailsFetchingEvent>(CocktailsFetchingEvent.LoadingEvent)
     val dataFetchingEvent = _dataFetchingState.asStateFlow()
 
     init {
-        getCocktailsByAlcoholic("Alcoholic")
+        getCocktailsByAlcoholic(INITIAL_FILTER)
     }
 
 
 
     fun getCocktailsByAlcoholic(alcoholic : String){
-        _dataFetchingState.value = CocktailsFetchingEvent.LoadingEvent
+
+
         viewModelScope.launch {
 
             try {
+                _dataFetchingState.value = CocktailsFetchingEvent.LoadingEvent
                 val response = cocktailsApi.getCocktailsByAlcoholic(alcoholic).drinks
                 if(response.isNotEmpty()) {
-                    _dataFetchingState.value = CocktailsFetchingEvent.SuccessEvent
-                    _cocktailsList.value = response
+                    _dataFetchingState.value = CocktailsFetchingEvent.SuccessEvent(response)
                 }else{
                     _dataFetchingState.value = CocktailsFetchingEvent.ErrorEvent(
                         context.getString(R.string.emptyCocktailsListErrorMessage))
@@ -50,15 +50,27 @@ class CocktailsContentViewModel @Inject constructor(private val cocktailsApi: Co
 
             }catch (e : IOException){
 
-                CocktailsFetchingEvent.ErrorEvent(context.getString(R.string.internetErrorMessage))
-
+                _dataFetchingState.value =
+                    CocktailsFetchingEvent.ErrorEvent(context.getString(R.string.internetErrorMessage))
             }catch (e: HttpException){
-                CocktailsFetchingEvent.ErrorEvent(context.getString(R.string.httpErrorMessage))
+                _dataFetchingState.value =
+                    CocktailsFetchingEvent.ErrorEvent(context.getString(R.string.httpErrorMessage))
 
             }
 
         }
 
+    }
+    fun retryCocktailsPreviewFetching(){
+
+
+        viewModelScope.launch {
+            delay(5000)
+            getCocktailsByAlcoholic(INITIAL_FILTER)
+        }
+    }
+    companion object{
+        const val INITIAL_FILTER = "Alcoholic"
     }
 
 

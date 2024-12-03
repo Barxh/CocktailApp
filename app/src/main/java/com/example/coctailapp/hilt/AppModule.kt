@@ -2,6 +2,7 @@ package com.example.coctailapp.hilt
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.coctailapp.Constants
 import com.example.coctailapp.network.CocktailsApi
 import dagger.Module
 import dagger.Provides
@@ -27,7 +28,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCocktailsApi(): CocktailsApi = Retrofit.Builder()
-        .baseUrl("https://www.thecocktaildb.com/api/json/v1/1/")
+        .baseUrl(Constants.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build().create()
 }

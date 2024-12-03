@@ -43,7 +43,10 @@ android {
 }
 
 dependencies {
-//dsd
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.coil.compose)
+    implementation(libs.gson.converter)
+    implementation(libs.squareup.retrofit)
     implementation(libs.hilt.navigation)
     implementation(libs.google.code.gson)
     implementation(libs.dagger.hilt)

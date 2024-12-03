@@ -61,6 +61,8 @@ class CocktailsContentViewModel @Inject constructor(private val cocktailsApi: Co
         }
 
     }
+
+    // TODO
     fun retryCocktailsPreviewFetching(){
 
 

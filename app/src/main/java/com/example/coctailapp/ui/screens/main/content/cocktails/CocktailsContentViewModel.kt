@@ -1,6 +1,7 @@
 package com.example.coctailapp.ui.screens.main.content.cocktails
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil3.network.HttpException
@@ -58,7 +59,13 @@ class CocktailsContentViewModel @Inject constructor(
                     FilterType.INGREDIENT -> cocktailsApi.getCocktailsByIngredient(filter)
                     FilterType.FIRST_LETTER -> cocktailsApi.getCocktailsByFirstLetter(filter).toCocktailsResponse()
                 }
+                Log.e("Bug", response.toString())
+                if (response.drinks!=null)
                 _dataFetchingState.value = CocktailsFetchingEvent.SuccessEvent(response.drinks)
+                else {
+                    _dataFetchingState.value =
+                    CocktailsFetchingEvent.ErrorEvent(context.getString(R.string.emptyCocktailsListErrorMessage))
+                }
 
             } catch (e: IOException) {
 

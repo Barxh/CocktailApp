@@ -27,6 +27,7 @@
     <string name="internetErrorMessage">Sorry, something went wrong! Please check your internet connection</string>
     <string name="httpErrorMessage">Sorry, something went wrong!</string>
     <string name="emptyCocktailsListErrorMessage">Sorry, there is no cocktail with such attributes</string>
+    <string name="filterBy">Filter cocktails by </string>
 
 
 

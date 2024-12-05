@@ -11,4 +11,25 @@ sealed class Destinations {
 
     @Serializable
     object MainScreen
+
+    @Serializable
+    object CocktailsContent
+
+    @Serializable
+    object ShoppingList
+
+    @Serializable
+    object Profile
+
+    @Serializable
+    object CocktailsFragment
+
+    @Serializable
+    object  FilterFragment
+
+    @Serializable
+    object  SearchFragment
+
+    @Serializable
+    object  FilterDetailsFragment
 }

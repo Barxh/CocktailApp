@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.coctailapp.ui.navigation.Destinations.*
+import com.example.coctailapp.ui.navigation.Destinations.LoginScreen
+import com.example.coctailapp.ui.navigation.Destinations.MainScreen
+import com.example.coctailapp.ui.navigation.Destinations.RegisterScreen
 import com.example.coctailapp.ui.screens.login.LoginScreen
 import com.example.coctailapp.ui.screens.main.MainScreen
 import com.example.coctailapp.ui.screens.register.RegisterScreen
@@ -25,10 +27,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-
             CoctailAppTheme {
 
                 val navController = rememberNavController()
+
 
                 NavHost(
                     navController = navController,
@@ -66,9 +68,11 @@ class MainActivity : ComponentActivity() {
                         )
 
                     }
+
                     composable<MainScreen> {
                         MainScreen()
                     }
+
                 }
 
 

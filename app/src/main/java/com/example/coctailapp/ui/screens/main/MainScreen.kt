@@ -45,7 +45,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 
 @OptIn(ExperimentalSerializationApi::class)
 @Composable
-fun MainScreen(mainViewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()) {
 
     val navController = rememberNavController()
 
@@ -104,7 +104,7 @@ fun MainScreen(mainViewModel: MainViewModel = hiltViewModel()) {
                     bottom = innerPadding.calculateBottomPadding()
                 )
         ) {
-            BottomNavigationGraph(navController, mainViewModel)
+            BottomNavigationGraph(email = userEmail, navController, mainViewModel)
 
 
             Log.e("NavController", navController.toString())
@@ -143,7 +143,7 @@ fun MainScreen(mainViewModel: MainViewModel = hiltViewModel()) {
 
 
 @Composable
-fun BottomNavigationGraph(navController : NavHostController, mainViewModel: MainViewModel){
+fun BottomNavigationGraph(email : String, navController : NavHostController, mainViewModel: MainViewModel){
 
     NavHost(
         navController = navController,
@@ -151,7 +151,7 @@ fun BottomNavigationGraph(navController : NavHostController, mainViewModel: Main
 
     ){
         composable<Destinations.CocktailsContent> {
-            CocktailsScreen(mainViewModel = mainViewModel)
+            CocktailsScreen(email = email, mainViewModel = mainViewModel)
         }
         composable<Destinations.ShoppingList> {
             ShoppingContent()

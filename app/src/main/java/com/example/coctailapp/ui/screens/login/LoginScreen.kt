@@ -50,7 +50,7 @@ import com.example.coctailapp.ui.components.CustomTextField
 fun LoginScreen(
     navigateToRegisterScreen: () -> Unit,
     loginViewModel: LoginViewModel = hiltViewModel(),
-    navigateToMainScreen: () -> Unit
+    navigateToMainScreen: (email : String) -> Unit
 ) {
 
     val loginEvent by loginViewModel.loginState.collectAsStateWithLifecycle()
@@ -65,8 +65,8 @@ fun LoginScreen(
     }
     LaunchedEffect(loginEvent) {
         when(loginEvent){
-            LoginEvent.LoginSuccess -> {
-            navigateToMainScreen()
+            is LoginEvent.LoginSuccess -> {
+            navigateToMainScreen((loginEvent as LoginEvent.LoginSuccess).email)
         }
             is LoginEvent.LoginFailed -> {
 

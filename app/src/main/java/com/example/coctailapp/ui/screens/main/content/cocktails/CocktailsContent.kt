@@ -19,10 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +36,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil3.compose.AsyncImage
 import com.example.coctailapp.R
-import com.example.coctailapp.model.CocktailsPreview
+import com.example.coctailapp.model.CocktailsPreviewPlusFavorites
 import com.example.coctailapp.ui.components.AppThemeStyle
 import com.example.coctailapp.ui.navigation.Destinations
 import com.example.coctailapp.ui.screens.main.MainViewModel
@@ -50,15 +46,19 @@ import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterScr
 
 
 @Composable
-fun CocktailsScreen(mainViewModel: MainViewModel,
+fun CocktailsScreen(
+    email: String,
+    mainViewModel: MainViewModel,
     cocktailsContentViewModel: CocktailsContentViewModel = hiltViewModel(),
-                    ) {
+) {
 
     val navController = rememberNavController()
 
+    cocktailsContentViewModel.setCurrentUserEmail(email)
+
     mainViewModel.setNestedNavController(navController)
 
-    CocktailsScreenNavigation(navController , cocktailsContentViewModel)
+    CocktailsScreenNavigation(navController, cocktailsContentViewModel)
 
 }
 
@@ -85,18 +85,21 @@ fun ErrorScreen(errorMessage: String) {
 }
 
 @Composable
-fun CocktailsGridScreen(cocktailsList: List<CocktailsPreview>, filter : String) {
+fun CocktailsGridScreen( filter: String, cocktailsContentViewModel: CocktailsContentViewModel) {
 
+    val cocktailsPreviewPlusFavoritesList = cocktailsContentViewModel.cocktailsPreviewPlusFavorites.collectAsStateWithLifecycle()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Text(filter, Modifier.padding(10.dp).background(Color.Green).padding(2.dp))
+        Text(filter,
+            Modifier
+                .padding(10.dp)
+                .background(Color.Green)
+                .padding(2.dp))
         HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = Color.Gray)
         LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-            items(cocktailsList) { item: CocktailsPreview ->
+            items(cocktailsPreviewPlusFavoritesList.value) { item: CocktailsPreviewPlusFavorites ->
 
-                var favoriteSelected by rememberSaveable {
-                    mutableStateOf(false)
-                }
+
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
@@ -105,16 +108,18 @@ fun CocktailsGridScreen(cocktailsList: List<CocktailsPreview>, filter : String) 
                         .padding(5.dp)
                 ) {
                     AsyncImage(
-                        model = item.strDrinkThumb,
+                        model = item.imageURL,
                         contentDescription = stringResource(R.string.cocktailImageDescription),
                         modifier = Modifier.height(250.dp),
                         contentScale = ContentScale.Crop
                     )
-                    Text(text = item.strDrink, textAlign = TextAlign.Center)
+                    Text(text = item.cocktailName, textAlign = TextAlign.Center)
 
-                    IconButton(onClick = { favoriteSelected = !favoriteSelected }) {
+                    IconButton(onClick = { cocktailsContentViewModel.deleteOrInsertToUserFavorites(
+                        cocktailsPreviewPlusFavorites = item
+                    ) }) {
                         Box {
-                            if (favoriteSelected) {
+                            if (item.favorite) {
 
 
                                 Icon(
@@ -167,24 +172,24 @@ fun CocktailsPreviewingScreen(
     val fetchingStatus = cocktailsContentViewModel.dataFetchingEvent.collectAsStateWithLifecycle()
     AppThemeStyle(
         toolbarActions = {
-        IconButton(onClick = { /* to do */ }) {
-            Icon(
-                imageVector = Icons.Outlined.Search,
-                contentDescription = stringResource(R.string.search)
-            )
-        }
-        IconButton(onClick = {
-            navController.navigate(Destinations.FilterFragment){
+            IconButton(onClick = { /* to do */ }) {
+                Icon(
+                    imageVector = Icons.Outlined.Search,
+                    contentDescription = stringResource(R.string.search)
+                )
             }
-        }) {
-            Icon(
-                imageVector = Icons.Outlined.FilterAlt,
-                contentDescription = stringResource(R.string.filter)
-            )
-        }
-    },
+            IconButton(onClick = {
+                navController.navigate(Destinations.FilterFragment) {
+                }
+            }) {
+                Icon(
+                    imageVector = Icons.Outlined.FilterAlt,
+                    contentDescription = stringResource(R.string.filter)
+                )
+            }
+        },
         toolbarTitle = stringResource(R.string.cocktails),
-        ) {
+    ) {
 
         when (fetchingStatus.value) {
             is CocktailsFetchingEvent.ErrorEvent -> {
@@ -194,25 +199,30 @@ fun CocktailsPreviewingScreen(
 
             CocktailsFetchingEvent.LoadingEvent -> LoadingScreen()
             is SuccessEvent -> CocktailsGridScreen(
-                (fetchingStatus.value as SuccessEvent).cocktailsList, cocktailsContentViewModel.getFilter()
+                cocktailsContentViewModel.getFilter(),
+                cocktailsContentViewModel
             )
         }
 
     }
 
 }
+
 @Composable
-fun CocktailsScreenNavigation(navController: NavHostController,
-                              cocktailsContentViewModel: CocktailsContentViewModel){
+fun CocktailsScreenNavigation(
+    navController: NavHostController,
+    cocktailsContentViewModel: CocktailsContentViewModel
+) {
 
     NavHost(
-        navController= navController,
-        startDestination = Destinations.CocktailsFragment){
+        navController = navController,
+        startDestination = Destinations.CocktailsFragment
+    ) {
         composable<Destinations.CocktailsFragment> {
             CocktailsPreviewingScreen(navController, cocktailsContentViewModel)
         }
         composable<Destinations.FilterFragment> {
-            FilterScreen(navController,cocktailsContentViewModel)
+            FilterScreen(navController, cocktailsContentViewModel)
         }
         composable<Destinations.FilterDetailsFragment> {
             FilterScreenDetails(navController, cocktailsContentViewModel)

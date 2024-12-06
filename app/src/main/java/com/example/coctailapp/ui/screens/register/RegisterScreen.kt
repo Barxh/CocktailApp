@@ -48,7 +48,7 @@ import com.example.coctailapp.ui.components.CustomTextField
 @Composable
 fun RegisterScreen(
     navigateToLoginScreen: () -> Unit, registerViewModel: RegisterViewModel = hiltViewModel(),
-    navigateToMainScreen: () -> Unit
+    navigateToMainScreen: (email : String) -> Unit
 ) {
 
 
@@ -80,8 +80,8 @@ fun RegisterScreen(
                 registerViewModel.setRegistrationState(RegisterEvent.RegistrationAwait)
 
             }
-            RegisterEvent.RegistrationSuccessful -> {
-                navigateToMainScreen()
+            is RegisterEvent.RegistrationSuccessful -> {
+                navigateToMainScreen((registerEvent as RegisterEvent.RegistrationSuccessful).email)
             }
         }
     }

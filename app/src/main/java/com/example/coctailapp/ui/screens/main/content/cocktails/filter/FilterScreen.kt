@@ -43,7 +43,6 @@ fun FilterScreen(
             {
                 popUpTo(Destinations.CocktailsFragment) {
                     inclusive = true
-                    saveState = false
                 }
             }
         },
@@ -99,6 +98,7 @@ fun FilterTypeChoosingScreen(
         LazyColumn {
 
             items(filterList) { filterType ->
+                if (filterType!=FilterType.SEARCH)
                 Column {
                     Box(
                         Modifier

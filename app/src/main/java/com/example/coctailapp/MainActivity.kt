@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.coctailapp.ui.navigation.Destinations.LoginScreen
 import com.example.coctailapp.ui.navigation.Destinations.MainScreen
 import com.example.coctailapp.ui.navigation.Destinations.RegisterScreen
@@ -40,8 +41,8 @@ class MainActivity : ComponentActivity() {
                         LoginScreen(
                             navigateToRegisterScreen = { navController.navigate(RegisterScreen) },
 
-                            navigateToMainScreen = {
-                                navController.navigate(MainScreen){
+                            navigateToMainScreen = { email ->
+                                navController.navigate(MainScreen(email)){
                                     popUpTo(LoginScreen){
                                         inclusive = true
                                     }
@@ -58,8 +59,8 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             },
-                            navigateToMainScreen = {
-                                navController.navigate(MainScreen){
+                            navigateToMainScreen = { email->
+                                navController.navigate(MainScreen(email)){
                                     popUpTo(LoginScreen) {
                                         inclusive = true
                                     }
@@ -70,7 +71,9 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable<MainScreen> {
-                        MainScreen()
+
+                        val args = it.toRoute<MainScreen>()
+                        MainScreen(userEmail = args.email)
                     }
 
                 }

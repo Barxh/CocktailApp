@@ -1,6 +1,5 @@
 package com.example.coctailapp.ui.screens.main
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,7 +44,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 
 @OptIn(ExperimentalSerializationApi::class)
 @Composable
-fun MainScreen(mainViewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()) {
 
     val navController = rememberNavController()
 
@@ -104,10 +103,9 @@ fun MainScreen(mainViewModel: MainViewModel = hiltViewModel()) {
                     bottom = innerPadding.calculateBottomPadding()
                 )
         ) {
-            BottomNavigationGraph(navController, mainViewModel)
+            BottomNavigationGraph(email = userEmail, navController, mainViewModel)
 
 
-            Log.e("NavController", navController.toString())
 
             when(selectedBottomNavigationItem.value){
                 0-> navController.navigate(Destinations.CocktailsContent){
@@ -143,7 +141,7 @@ fun MainScreen(mainViewModel: MainViewModel = hiltViewModel()) {
 
 
 @Composable
-fun BottomNavigationGraph(navController : NavHostController, mainViewModel: MainViewModel){
+fun BottomNavigationGraph(email : String, navController : NavHostController, mainViewModel: MainViewModel){
 
     NavHost(
         navController = navController,
@@ -151,7 +149,7 @@ fun BottomNavigationGraph(navController : NavHostController, mainViewModel: Main
 
     ){
         composable<Destinations.CocktailsContent> {
-            CocktailsScreen(mainViewModel = mainViewModel)
+            CocktailsScreen(email = email, mainViewModel = mainViewModel)
         }
         composable<Destinations.ShoppingList> {
             ShoppingContent()

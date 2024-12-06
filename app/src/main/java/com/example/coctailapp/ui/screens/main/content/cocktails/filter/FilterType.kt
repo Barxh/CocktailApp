@@ -5,7 +5,8 @@ enum class FilterType {
     CATEGORY,
     GLASS_USED,
     INGREDIENT,
-    FIRST_LETTER;
+    FIRST_LETTER,
+    SEARCH;
 
 
     fun toTitle(): String =

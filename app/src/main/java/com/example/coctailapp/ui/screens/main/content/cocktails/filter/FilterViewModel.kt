@@ -44,6 +44,11 @@ class FilterViewModel @Inject constructor(
 
                     }
 
+                    FilterType.SEARCH -> object : ListConvertible {
+                        override fun toList(): List<String> {
+                            return emptyList()
+                        }
+                    }
                 }
                 _fetchingState.value = FilterFetchingEvent.SuccessEvent(response.toList())
 
@@ -55,6 +60,8 @@ class FilterViewModel @Inject constructor(
                 _fetchingState.value =
                     FilterFetchingEvent.ErrorEvent(context.getString(R.string.httpErrorMessage))
 
+            }catch (e : IllegalStateException){
+                //hello
             }
 
 

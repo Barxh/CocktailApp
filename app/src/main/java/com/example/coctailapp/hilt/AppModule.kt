@@ -2,7 +2,10 @@ package com.example.coctailapp.hilt
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.example.coctailapp.Constants
+import com.example.coctailapp.database.CocktailsDatabase
+import com.example.coctailapp.database.FavoritesCocktailsDao
 import com.example.coctailapp.network.CocktailsApi
 import dagger.Module
 import dagger.Provides
@@ -31,4 +34,13 @@ object AppModule {
         .baseUrl(Constants.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build().create()
+
+    @Provides
+    @Singleton
+    fun provideFavoritesCocktailsDao(@ApplicationContext context: Context): FavoritesCocktailsDao =
+        Room.databaseBuilder(
+            context,
+            CocktailsDatabase::class.java,
+            "cocktails.DB"
+        ).build().favoritesCocktailsDao()
 }

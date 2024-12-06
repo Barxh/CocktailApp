@@ -10,7 +10,7 @@ sealed class Destinations {
     object RegisterScreen
 
     @Serializable
-    object MainScreen
+    data class MainScreen(val email: String)
 
     @Serializable
     object CocktailsContent

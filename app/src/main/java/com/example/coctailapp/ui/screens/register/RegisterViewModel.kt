@@ -75,7 +75,7 @@ class RegisterViewModel @Inject constructor(private val sharedPreferences: Share
             apply()
 
         }
-        _registerState.value = RegisterEvent.RegistrationSuccessful
+        _registerState.value = RegisterEvent.RegistrationSuccessful(email)
     }
 
     fun setRegistrationState(registerEvent: RegisterEvent) {

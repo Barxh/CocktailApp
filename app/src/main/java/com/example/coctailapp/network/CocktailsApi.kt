@@ -27,6 +27,10 @@ interface CocktailsApi {
     @GET("search.php")
     suspend fun getCocktailsByFirstLetter(@Query("f") alcoholic: String): CocktailsDetailsResponse
 
+    @GET("search.php")
+    suspend fun getCocktailsWithSearch(@Query("s") alcoholic: String): CocktailsDetailsResponse
+
+
     @GET("list.php?a=list")
     suspend fun getFilterAlcoholic(): FilterAlcoholicResponse
 

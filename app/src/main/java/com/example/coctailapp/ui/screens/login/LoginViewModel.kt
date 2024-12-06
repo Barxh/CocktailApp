@@ -44,7 +44,7 @@ class LoginViewModel @Inject constructor(private val sharedPreferences: SharedPr
 
 
         if (password == user.password){
-            _loginState.value = LoginEvent.LoginSuccess
+            _loginState.value = LoginEvent.LoginSuccess(email)
         }
 
 

@@ -13,6 +13,7 @@ import com.example.coctailapp.model.FavoritesCocktailInterface
 import com.example.coctailapp.model.UserFavoriteCocktail
 import com.example.coctailapp.network.CocktailsApi
 import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterType
+import com.example.coctailapp.ui.screens.main.content.cocktails.search.SearchRegulation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
@@ -41,6 +42,8 @@ class CocktailsContentViewModel @Inject constructor(
         MutableStateFlow(listOf<CocktailsPreviewPlusFavorites>())
     val cocktailsPreviewPlusFavorites = _cocktailsPreviewPlusFavorites.asStateFlow()
 
+    private var _searchRegulationState = MutableStateFlow<SearchRegulation>(SearchRegulation.SearchPending)
+    val searchRegulationState = _searchRegulationState.asStateFlow()
 
     private lateinit var _favoritesList: Flow<List<UserFavoriteCocktail>>
 
@@ -147,6 +150,8 @@ class CocktailsContentViewModel @Inject constructor(
                     FilterType.INGREDIENT -> cocktailsApi.getCocktailsByIngredient(filter)
                     FilterType.FIRST_LETTER -> cocktailsApi.getCocktailsByFirstLetter(filter)
                         .toCocktailsResponse()
+
+                    FilterType.SEARCH -> cocktailsApi.getCocktailsWithSearch(filter).toCocktailsResponse()
                 }
                 if (response.drinks != null)
                     _dataFetchingState.value = CocktailsFetchingEvent.SuccessEvent(response.drinks)
@@ -179,6 +184,20 @@ class CocktailsContentViewModel @Inject constructor(
             delay(5000)
             filterCocktails()
         }
+    }
+
+    fun setSearchFilter(search: String) {
+
+        if (search.isEmpty())
+            _searchRegulationState.value = SearchRegulation.SearchDenied(context.getString(R.string.searchError))
+        else{
+            setFilter(search)
+            _searchRegulationState.value = SearchRegulation.SearchApproved
+        }
+    }
+
+    fun resetRegulationState() {
+        _searchRegulationState.value = SearchRegulation.SearchPending
     }
 
     companion object {

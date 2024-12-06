@@ -51,17 +51,60 @@ fun CocktailsScreen(
     mainViewModel: MainViewModel,
     cocktailsContentViewModel: CocktailsContentViewModel = hiltViewModel(),
 ) {
-
-    val navController = rememberNavController()
-
     cocktailsContentViewModel.setCurrentUserEmail(email)
 
+    val navController = rememberNavController()
     mainViewModel.setNestedNavController(navController)
 
     CocktailsScreenNavigation(navController, cocktailsContentViewModel)
-
 }
 
+@Composable
+fun CocktailsPreviewingScreen(
+    navController: NavHostController,
+    cocktailsContentViewModel: CocktailsContentViewModel = hiltViewModel()
+) {
+    cocktailsContentViewModel.filterCocktails()
+
+
+    val fetchingStatus = cocktailsContentViewModel.dataFetchingEvent.collectAsStateWithLifecycle()
+    AppThemeStyle(
+        toolbarActions = {
+            IconButton(onClick = { /* to do */ }) {
+                Icon(
+                    imageVector = Icons.Outlined.Search,
+                    contentDescription = stringResource(R.string.search)
+                )
+            }
+            IconButton(onClick = {
+                navController.navigate(Destinations.FilterFragment) {
+                }
+            }) {
+                Icon(
+                    imageVector = Icons.Outlined.FilterAlt,
+                    contentDescription = stringResource(R.string.filter)
+                )
+            }
+        },
+        toolbarTitle = stringResource(R.string.cocktails),
+    ) {
+
+        when (fetchingStatus.value) {
+            is CocktailsFetchingEvent.ErrorEvent -> {
+                ErrorScreen((fetchingStatus.value as CocktailsFetchingEvent.ErrorEvent).errorMessage)
+                cocktailsContentViewModel.retryCocktailsPreviewFetching()
+            }
+
+            CocktailsFetchingEvent.LoadingEvent -> LoadingScreen()
+            is SuccessEvent -> CocktailsGridScreen(
+                cocktailsContentViewModel.getFilter(),
+                cocktailsContentViewModel
+            )
+        }
+
+    }
+
+}
 
 @Composable
 fun LoadingScreen() {
@@ -161,52 +204,7 @@ fun CocktailsGridScreen( filter: String, cocktailsContentViewModel: CocktailsCon
 }
 
 
-@Composable
-fun CocktailsPreviewingScreen(
-    navController: NavHostController,
-    cocktailsContentViewModel: CocktailsContentViewModel = hiltViewModel()
-) {
-    cocktailsContentViewModel.filterCocktails()
 
-
-    val fetchingStatus = cocktailsContentViewModel.dataFetchingEvent.collectAsStateWithLifecycle()
-    AppThemeStyle(
-        toolbarActions = {
-            IconButton(onClick = { /* to do */ }) {
-                Icon(
-                    imageVector = Icons.Outlined.Search,
-                    contentDescription = stringResource(R.string.search)
-                )
-            }
-            IconButton(onClick = {
-                navController.navigate(Destinations.FilterFragment) {
-                }
-            }) {
-                Icon(
-                    imageVector = Icons.Outlined.FilterAlt,
-                    contentDescription = stringResource(R.string.filter)
-                )
-            }
-        },
-        toolbarTitle = stringResource(R.string.cocktails),
-    ) {
-
-        when (fetchingStatus.value) {
-            is CocktailsFetchingEvent.ErrorEvent -> {
-                ErrorScreen((fetchingStatus.value as CocktailsFetchingEvent.ErrorEvent).errorMessage)
-                cocktailsContentViewModel.retryCocktailsPreviewFetching()
-            }
-
-            CocktailsFetchingEvent.LoadingEvent -> LoadingScreen()
-            is SuccessEvent -> CocktailsGridScreen(
-                cocktailsContentViewModel.getFilter(),
-                cocktailsContentViewModel
-            )
-        }
-
-    }
-
-}
 
 @Composable
 fun CocktailsScreenNavigation(

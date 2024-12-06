@@ -55,6 +55,8 @@ class FilterViewModel @Inject constructor(
                 _fetchingState.value =
                     FilterFetchingEvent.ErrorEvent(context.getString(R.string.httpErrorMessage))
 
+            }catch (e : IllegalStateException){
+                //hello
             }
 
 

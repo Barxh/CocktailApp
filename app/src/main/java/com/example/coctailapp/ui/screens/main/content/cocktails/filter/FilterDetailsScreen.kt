@@ -45,12 +45,9 @@ fun FilterScreenDetails(
         toolbarNavigation = {
             IconButton(onClick = {
                 navController.navigate(Destinations.FilterFragment) {
-                    popUpTo(Destinations.FilterFragment) {
+                    popUpTo(Destinations.CocktailsFragment) {
                         inclusive = false
-                        saveState = false
                     }
-                    launchSingleTop = true
-                    restoreState = false
                 }
             }) {
                 Icon(

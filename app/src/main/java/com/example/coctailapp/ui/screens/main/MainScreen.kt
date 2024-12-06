@@ -1,6 +1,5 @@
 package com.example.coctailapp.ui.screens.main
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -107,7 +106,6 @@ fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()
             BottomNavigationGraph(email = userEmail, navController, mainViewModel)
 
 
-            Log.e("NavController", navController.toString())
 
             when(selectedBottomNavigationItem.value){
                 0-> navController.navigate(Destinations.CocktailsContent){

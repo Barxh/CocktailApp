@@ -43,7 +43,6 @@ fun FilterScreen(
             {
                 popUpTo(Destinations.CocktailsFragment) {
                     inclusive = true
-                    saveState = false
                 }
             }
         },

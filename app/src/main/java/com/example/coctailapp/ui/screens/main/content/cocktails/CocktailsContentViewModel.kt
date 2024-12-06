@@ -1,7 +1,6 @@
 package com.example.coctailapp.ui.screens.main.content.cocktails
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil3.network.HttpException
@@ -48,6 +47,7 @@ class CocktailsContentViewModel @Inject constructor(
 
     private var filter = INITIAL_FILTER
     private var filterType = FilterType.ALCOHOLIC_OR_NOT
+    private var temporaryFilterType = FilterType.ALCOHOLIC_OR_NOT
     private var email = ""
 
 
@@ -56,7 +56,6 @@ class CocktailsContentViewModel @Inject constructor(
 
         _favoritesList = favoritesCocktailsDao.getUserFavoritesCocktails(email)
         _dataFetchingState.combine(_favoritesList) { fetchingStatus, favorites ->
-            Log.e("baza", favorites.toString())
             when (fetchingStatus) {
                 is CocktailsFetchingEvent.ErrorEvent -> {
                     // Do nothing
@@ -104,12 +103,13 @@ class CocktailsContentViewModel @Inject constructor(
     }
 
     fun setFilterType(filter: FilterType) {
-        this.filterType = filter
+        temporaryFilterType = filter
     }
 
-    fun getFilterType(): FilterType = filterType
+    fun getFilterType(): FilterType = temporaryFilterType
 
     fun setFilter(filter: String) {
+        filterType = temporaryFilterType
         this.filter = filter
     }
 
@@ -148,7 +148,6 @@ class CocktailsContentViewModel @Inject constructor(
                     FilterType.FIRST_LETTER -> cocktailsApi.getCocktailsByFirstLetter(filter)
                         .toCocktailsResponse()
                 }
-                Log.e("Bug", response.toString())
                 if (response.drinks != null)
                     _dataFetchingState.value = CocktailsFetchingEvent.SuccessEvent(response.drinks)
                 else {
@@ -164,6 +163,8 @@ class CocktailsContentViewModel @Inject constructor(
                 _dataFetchingState.value =
                     CocktailsFetchingEvent.ErrorEvent(context.getString(R.string.httpErrorMessage))
 
+            }catch (e : IllegalStateException){
+                //hello
             }
 
         }

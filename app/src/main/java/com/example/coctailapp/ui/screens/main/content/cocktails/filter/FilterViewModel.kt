@@ -44,6 +44,11 @@ class FilterViewModel @Inject constructor(
 
                     }
 
+                    FilterType.SEARCH -> object : ListConvertible {
+                        override fun toList(): List<String> {
+                            return emptyList()
+                        }
+                    }
                 }
                 _fetchingState.value = FilterFetchingEvent.SuccessEvent(response.toList())
 

@@ -98,6 +98,7 @@ fun FilterTypeChoosingScreen(
         LazyColumn {
 
             items(filterList) { filterType ->
+                if (filterType!=FilterType.SEARCH)
                 Column {
                     Box(
                         Modifier

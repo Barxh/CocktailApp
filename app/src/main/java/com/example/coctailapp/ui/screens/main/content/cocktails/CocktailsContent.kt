@@ -43,6 +43,7 @@ import com.example.coctailapp.ui.screens.main.MainViewModel
 import com.example.coctailapp.ui.screens.main.content.cocktails.CocktailsFetchingEvent.SuccessEvent
 import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterScreen
 import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterScreenDetails
+import com.example.coctailapp.ui.screens.main.content.cocktails.search.SearchScreen
 
 
 @Composable
@@ -70,7 +71,7 @@ fun CocktailsPreviewingScreen(
     val fetchingStatus = cocktailsContentViewModel.dataFetchingEvent.collectAsStateWithLifecycle()
     AppThemeStyle(
         toolbarActions = {
-            IconButton(onClick = { /* to do */ }) {
+            IconButton(onClick = { navController.navigate(Destinations.SearchFragment)}) {
                 Icon(
                     imageVector = Icons.Outlined.Search,
                     contentDescription = stringResource(R.string.search)
@@ -227,6 +228,7 @@ fun CocktailsScreenNavigation(
         }
         composable<Destinations.SearchFragment> {
 
+            SearchScreen(cocktailsContentViewModel, navController)
         }
     }
 

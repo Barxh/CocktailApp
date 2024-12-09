@@ -30,7 +30,6 @@ class LoginViewModel @Inject constructor(private val sharedPreferences: SharedPr
             return
         }
 
-
         val userString = sharedPreferences.getString(email, null)
 
         if (userString == null) {
@@ -42,18 +41,12 @@ class LoginViewModel @Inject constructor(private val sharedPreferences: SharedPr
         }
         val user = Gson().fromJson(userString, User::class.java)
 
-
         if (password == user.password){
             _loginState.value = LoginEvent.LoginSuccess(email)
-        }
-
-
-        else
+        }else
             _loginState.value = LoginEvent.LoginFailed(context.getString(R.string.invalidPassword))
 
     }
-
-
 
 fun setState(loginEvent: LoginEvent){
     _loginState.value = loginEvent

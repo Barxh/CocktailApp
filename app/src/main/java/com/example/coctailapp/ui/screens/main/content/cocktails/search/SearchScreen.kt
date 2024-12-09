@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
@@ -36,6 +37,7 @@ import com.example.coctailapp.ui.components.CustomTextField
 import com.example.coctailapp.ui.navigation.Destinations
 import com.example.coctailapp.ui.screens.main.content.cocktails.CocktailsContentViewModel
 import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterType
+import com.example.coctailapp.ui.theme.PrimaryColor
 import com.example.coctailapp.ui.theme.Typography
 
 @Composable
@@ -97,7 +99,7 @@ fun SearchScreen(viewModel: CocktailsContentViewModel, navController: NavControl
     ) {
         Column(Modifier.padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(Modifier.height(20.dp))
-            CustomTextField(search, stringResource(R.string.search), Color.White, false, KeyboardType.Text, false)
+            CustomTextField(search, stringResource(R.string.search), PrimaryColor, false, KeyboardType.Text, false)
             Spacer(Modifier.height(50.dp))
             Button(
                 onClick = {
@@ -106,7 +108,8 @@ fun SearchScreen(viewModel: CocktailsContentViewModel, navController: NavControl
                 }, modifier = Modifier
                     .width(140.dp)
                     .height(44.dp),
-                shape = RectangleShape
+                shape = RectangleShape,
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryColor)
             ) {
                 Row(
                     Modifier.fillMaxSize(),

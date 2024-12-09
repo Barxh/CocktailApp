@@ -44,6 +44,7 @@ import com.example.coctailapp.ui.screens.main.content.cocktails.CocktailsFetchin
 import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterScreen
 import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterScreenDetails
 import com.example.coctailapp.ui.screens.main.content.cocktails.search.SearchScreen
+import com.example.coctailapp.ui.theme.SemiTransparentGreen
 
 
 @Composable
@@ -137,8 +138,13 @@ fun CocktailsGridScreen( filter: String, cocktailsContentViewModel: CocktailsCon
         Text(filter,
             Modifier
                 .padding(10.dp)
-                .background(Color.Green)
-                .padding(2.dp))
+                .background(SemiTransparentGreen)
+                .padding(
+                    top = 2.dp,
+                    bottom = 2.dp,
+                    start = 10.dp,
+                    end = 10.dp
+                ))
         HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = Color.Gray)
         LazyVerticalGrid(columns = GridCells.Fixed(2)) {
             items(cocktailsPreviewPlusFavoritesList.value) { item: CocktailsPreviewPlusFavorites ->

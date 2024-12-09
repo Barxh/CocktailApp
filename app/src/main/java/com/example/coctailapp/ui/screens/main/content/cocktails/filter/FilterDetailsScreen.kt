@@ -103,7 +103,7 @@ fun FilterDetailsDataFetchingSuccessScreen(
 ) {
 
     Text(
-        stringResource(R.string.filterBy) + filterType,
+        stringResource(R.string.filterBy)+ " " + filterType,
         modifier = Modifier
             .fillMaxWidth()
             .padding(

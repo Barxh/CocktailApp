@@ -34,6 +34,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -162,6 +163,7 @@ fun AppThemeStyle(
 
 ) {
 
+
     Scaffold(
         snackbarHost = {
             if (snackBarHostState!=null)
@@ -173,7 +175,8 @@ fun AppThemeStyle(
                     Text(
                         text = toolbarTitle,
                         style = Typography.bodyLarge,
-                        fontSize = TextUnit(22f, TextUnitType.Sp)
+                        fontSize = TextUnit(22f, TextUnitType.Sp),
+                        fontWeight = FontWeight.Bold
                     )
                 },
                 colors = TopAppBarColors(
@@ -199,11 +202,11 @@ fun AppThemeStyle(
                 .background(
                     brush = Brush.linearGradient(
                         listOf(
-                            SecondaryColor,
-                            PrimaryColor
+                            PrimaryColor,
+                            SecondaryColor
                         ),
-                        start = Offset(0f, 0f),
-                        end = Offset(0f, 1500f)
+                        start = Offset(0f, 1000f),
+                        end = Offset(0f, 200f)
                     )
                 )
 

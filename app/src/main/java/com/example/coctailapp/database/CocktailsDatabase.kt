@@ -2,8 +2,8 @@ package com.example.coctailapp.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.coctailapp.model.ShoppingListIngredient
-import com.example.coctailapp.model.UserFavoriteCocktail
+import com.example.coctailapp.model.localdb.ShoppingListIngredient
+import com.example.coctailapp.model.localdb.UserFavoriteCocktail
 
 
 @Database([UserFavoriteCocktail::class, ShoppingListIngredient::class], version = 2)

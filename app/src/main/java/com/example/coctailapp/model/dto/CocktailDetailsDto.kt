@@ -1,8 +1,9 @@
-package com.example.coctailapp.model
+package com.example.coctailapp.model.dto
 
 import android.util.Log
+import com.example.coctailapp.model.Ingredient
 
-data class CocktailDetails(
+data class CocktailDetailsDto(
     val idDrink: String,
     val strAlcoholic: String,
     val strCategory: String,

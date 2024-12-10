@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.coctailapp.model.ShoppingListIngredient
+import com.example.coctailapp.model.localdb.ShoppingListIngredient
 import kotlinx.coroutines.flow.Flow
 
 @Dao

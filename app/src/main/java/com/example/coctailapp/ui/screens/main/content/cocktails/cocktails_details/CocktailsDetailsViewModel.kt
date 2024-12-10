@@ -7,10 +7,10 @@ import coil3.network.HttpException
 import com.example.coctailapp.R
 import com.example.coctailapp.database.FavoritesCocktailsDao
 import com.example.coctailapp.database.ShoppingListDao
-import com.example.coctailapp.model.CocktailDetails
+import com.example.coctailapp.model.dto.CocktailDetailsDto
 import com.example.coctailapp.model.Ingredient
-import com.example.coctailapp.model.ShoppingListIngredient
-import com.example.coctailapp.model.UserFavoriteCocktail
+import com.example.coctailapp.model.localdb.ShoppingListIngredient
+import com.example.coctailapp.model.localdb.UserFavoriteCocktail
 import com.example.coctailapp.network.CocktailsApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -42,7 +42,7 @@ class CocktailsDetailsViewModel @Inject constructor(
     var isFavoriteCocktail: StateFlow<List<UserFavoriteCocktail>> =
         MutableStateFlow(emptyList())
 
-    private lateinit var cocktailDetails: CocktailDetails
+    private lateinit var cocktailDetails: CocktailDetailsDto
 
     private lateinit var _shoppingList: Flow<List<ShoppingListIngredient>>
 

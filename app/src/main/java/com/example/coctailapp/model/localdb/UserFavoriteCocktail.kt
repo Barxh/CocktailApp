@@ -1,6 +1,7 @@
-package com.example.coctailapp.model
+package com.example.coctailapp.model.localdb
 
 import androidx.room.Entity
+import com.example.coctailapp.model.FavoritesCocktailInterface
 
 
 @Entity(tableName = "FAVORITE_COCKTAIL", primaryKeys = ["userId", "idDrink"])

@@ -2,6 +2,7 @@ package com.example.coctailapp.network
 
 import com.example.coctailapp.model.CocktailResponse
 import com.example.coctailapp.model.CocktailsDetailsResponse
+import com.example.coctailapp.model.CocktailsDetailsResponseTwo
 import com.example.coctailapp.model.FilterAlcoholicResponse
 import com.example.coctailapp.model.FilterCategoryResponse
 import com.example.coctailapp.model.FilterGlassResponse
@@ -42,4 +43,7 @@ interface CocktailsApi {
 
     @GET("list.php?i=list")
     suspend fun getFilterIngredient(): FilterIngredientResponse
+
+    @GET("lookup.php")
+    suspend fun getCocktailDetails(@Query("i") id: String) : CocktailsDetailsResponseTwo
 }

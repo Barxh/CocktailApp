@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.example.coctailapp.Constants
 import com.example.coctailapp.database.CocktailsDatabase
 import com.example.coctailapp.database.FavoritesCocktailsDao
+import com.example.coctailapp.database.ShoppingListDao
 import com.example.coctailapp.network.CocktailsApi
 import dagger.Module
 import dagger.Provides
@@ -42,5 +43,14 @@ object AppModule {
             context,
             CocktailsDatabase::class.java,
             "cocktails.DB"
-        ).build().favoritesCocktailsDao()
+        ).fallbackToDestructiveMigration().build().favoritesCocktailsDao()
+
+    @Provides
+    @Singleton
+    fun provideShoppingListDao(@ApplicationContext context: Context): ShoppingListDao =
+        Room.databaseBuilder(
+            context,
+            CocktailsDatabase::class.java,
+            "cocktails.DB"
+        ).fallbackToDestructiveMigration().build().shoppingListDao()
 }

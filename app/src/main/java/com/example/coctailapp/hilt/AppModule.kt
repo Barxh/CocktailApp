@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.example.coctailapp.Constants
 import com.example.coctailapp.database.CocktailsDatabase
 import com.example.coctailapp.database.FavoritesCocktailsDao
+import com.example.coctailapp.database.ShoppingListDao
 import com.example.coctailapp.network.CocktailsApi
 import dagger.Module
 import dagger.Provides
@@ -35,12 +36,27 @@ object AppModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build().create()
 
+
     @Provides
     @Singleton
-    fun provideFavoritesCocktailsDao(@ApplicationContext context: Context): FavoritesCocktailsDao =
+    fun provideCocktailDetail(@ApplicationContext context: Context): CocktailsDatabase =
         Room.databaseBuilder(
             context,
             CocktailsDatabase::class.java,
             "cocktails.DB"
-        ).build().favoritesCocktailsDao()
+        ).fallbackToDestructiveMigration().build()
+    @Provides
+    @Singleton
+    fun provideFavoritesCocktailsDao(cocktailsDatabase: CocktailsDatabase): FavoritesCocktailsDao =
+        cocktailsDatabase.favoritesCocktailsDao()
+
+    @Provides
+    @Singleton
+    fun provideShoppingListDao(cocktailsDatabase: CocktailsDatabase): ShoppingListDao =
+        cocktailsDatabase.shoppingListDao()
+
+
+    @Provides
+    @Singleton
+    fun provideEmptyString(): String = ""
 }

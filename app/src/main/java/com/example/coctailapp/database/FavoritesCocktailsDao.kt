@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.coctailapp.model.UserFavoriteCocktail
+import com.example.coctailapp.model.localdb.UserFavoriteCocktail
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -18,5 +18,8 @@ interface FavoritesCocktailsDao {
 
     @Query("SELECT * FROM FAVORITE_COCKTAIL WHERE userId = :email")
     fun getUserFavoritesCocktails(email: String): Flow<List<UserFavoriteCocktail>>
+
+    @Query("SELECT * FROM FAVORITE_COCKTAIL WHERE idDrink = :cocktailId")
+    fun getUserFavoriteCocktailById(cocktailId: String): Flow<List<UserFavoriteCocktail>>
 
 }

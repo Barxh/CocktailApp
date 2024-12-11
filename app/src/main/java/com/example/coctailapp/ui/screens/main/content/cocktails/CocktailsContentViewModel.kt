@@ -6,11 +6,11 @@ import androidx.lifecycle.viewModelScope
 import coil3.network.HttpException
 import com.example.coctailapp.R
 import com.example.coctailapp.database.FavoritesCocktailsDao
-import com.example.coctailapp.model.CocktailResponse
-import com.example.coctailapp.model.CocktailsPreview
+import com.example.coctailapp.model.dto.CocktailResponseDto
+import com.example.coctailapp.model.dto.CocktailsPreviewDto
 import com.example.coctailapp.model.CocktailsPreviewPlusFavorites
 import com.example.coctailapp.model.FavoritesCocktailInterface
-import com.example.coctailapp.model.UserFavoriteCocktail
+import com.example.coctailapp.model.localdb.UserFavoriteCocktail
 import com.example.coctailapp.network.CocktailsApi
 import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterType
 import com.example.coctailapp.ui.screens.main.content.cocktails.search.SearchRegulation
@@ -71,7 +71,7 @@ class CocktailsContentViewModel @Inject constructor(
                 is CocktailsFetchingEvent.SuccessEvent -> {
                     val list = mutableListOf<CocktailsPreviewPlusFavorites>()
 
-                    for (cocktailPreview: CocktailsPreview in fetchingStatus.cocktailsList) {
+                    for (cocktailPreview: CocktailsPreviewDto in fetchingStatus.cocktailsList) {
                         list.add(
                             CocktailsPreviewPlusFavorites(
                                 idDrink = cocktailPreview.idDrink,
@@ -143,7 +143,7 @@ class CocktailsContentViewModel @Inject constructor(
             try {
 
                 _dataFetchingState.value = CocktailsFetchingEvent.LoadingEvent
-                val response: CocktailResponse = when (filterType) {
+                val response: CocktailResponseDto = when (filterType) {
                     FilterType.ALCOHOLIC_OR_NOT -> cocktailsApi.getCocktailsByAlcoholic(filter)
                     FilterType.CATEGORY -> cocktailsApi.getCocktailsByCategory(filter)
                     FilterType.GLASS_USED -> cocktailsApi.getCocktailsByGlass(filter)

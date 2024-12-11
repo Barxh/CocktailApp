@@ -1,6 +1,7 @@
 package com.example.coctailapp.ui.screens.main.content.cocktails
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +35,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import coil3.compose.AsyncImage
 import com.example.coctailapp.R
 import com.example.coctailapp.model.CocktailsPreviewPlusFavorites
@@ -41,6 +43,7 @@ import com.example.coctailapp.ui.components.AppThemeStyle
 import com.example.coctailapp.ui.navigation.Destinations
 import com.example.coctailapp.ui.screens.main.MainViewModel
 import com.example.coctailapp.ui.screens.main.content.cocktails.CocktailsFetchingEvent.SuccessEvent
+import com.example.coctailapp.ui.screens.main.content.cocktails.cocktails_details.CocktailsDetailsScreen
 import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterScreen
 import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterScreenDetails
 import com.example.coctailapp.ui.screens.main.content.cocktails.search.SearchScreen
@@ -58,7 +61,7 @@ fun CocktailsScreen(
     val navController = rememberNavController()
     mainViewModel.setNestedNavController(navController)
 
-    CocktailsScreenNavigation(navController, cocktailsContentViewModel)
+    CocktailsScreenNavigation(navController, cocktailsContentViewModel, email)
 }
 
 @Composable
@@ -100,7 +103,8 @@ fun CocktailsPreviewingScreen(
             CocktailsFetchingEvent.LoadingEvent -> LoadingScreen()
             is SuccessEvent -> CocktailsGridScreen(
                 cocktailsContentViewModel.getFilter(),
-                cocktailsContentViewModel
+                cocktailsContentViewModel,
+                navController
             )
         }
 
@@ -130,7 +134,7 @@ fun ErrorScreen(errorMessage: String) {
 }
 
 @Composable
-fun CocktailsGridScreen( filter: String, cocktailsContentViewModel: CocktailsContentViewModel) {
+fun CocktailsGridScreen( filter: String, cocktailsContentViewModel: CocktailsContentViewModel, navController: NavHostController) {
 
     val cocktailsPreviewPlusFavoritesList = cocktailsContentViewModel.cocktailsPreviewPlusFavorites.collectAsStateWithLifecycle()
 
@@ -156,6 +160,9 @@ fun CocktailsGridScreen( filter: String, cocktailsContentViewModel: CocktailsCon
                         .padding(5.dp)
                         .background(Color.White)
                         .padding(5.dp)
+                        .clickable {
+                            navController.navigate(Destinations.CocktailsDetailsScreen(item.idDrink))
+                        }
                 ) {
                     AsyncImage(
                         model = item.imageURL,
@@ -216,7 +223,8 @@ fun CocktailsGridScreen( filter: String, cocktailsContentViewModel: CocktailsCon
 @Composable
 fun CocktailsScreenNavigation(
     navController: NavHostController,
-    cocktailsContentViewModel: CocktailsContentViewModel
+    cocktailsContentViewModel: CocktailsContentViewModel,
+     email: String
 ) {
 
     NavHost(
@@ -235,6 +243,10 @@ fun CocktailsScreenNavigation(
         composable<Destinations.SearchFragment> {
 
             SearchScreen(cocktailsContentViewModel, navController)
+        }
+        composable<Destinations.CocktailsDetailsScreen>{
+            val args = it.toRoute<Destinations.CocktailsDetailsScreen>()
+            CocktailsDetailsScreen(email, args.cocktailId, navController)
         }
     }
 

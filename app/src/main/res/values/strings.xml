@@ -22,8 +22,8 @@
     <string name="badInputErrorMessage">Please populate all fields</string>
     <string name="invalidEmail">Invalid email! Please enter valid email.</string>
     <string name="invalidPassword">Invalid password</string>
-    <string name="invalidPatternPassword">Please enter password with minimum one letter, minimum one number, minimum one special character" +
-                        " that has more than eight characters</string>
+    <string name="invalidPatternPassword">Please enter password with minimum one letter, minimum one number, minimum one special character
+        that has more than eight characters</string>
     <string name="internetErrorMessage">Sorry, something went wrong! Please check your internet connection</string>
     <string name="httpErrorMessage">Sorry, something went wrong!</string>
     <string name="emptyCocktailsListErrorMessage">Sorry, there is no cocktail with such attributes</string>

@@ -1,5 +1,6 @@
 package com.example.coctailapp.ui.screens.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -61,6 +62,9 @@ fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
 
+    BackHandler {
+
+    }
     Scaffold(modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar(containerColor = PrimaryColor) {
@@ -103,6 +107,7 @@ fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()
                     bottom = innerPadding.calculateBottomPadding()
                 )
         ) {
+
             BottomNavigationGraph(email = userEmail, navController, mainViewModel)
 
 
@@ -149,15 +154,20 @@ fun BottomNavigationGraph(email : String, navController : NavHostController, mai
 
     ){
         composable<Destinations.CocktailsContent> {
+            BackHandler { navController.popBackStack(navController.graph.findStartDestination(), false) }
             CocktailsScreen(email = email, mainViewModel = mainViewModel)
+            mainViewModel.resetNestedShoppingNavController()
         }
         composable<Destinations.ShoppingList> {
-            ShoppingContent()
-            mainViewModel.resetNestedNavController()
+            BackHandler { mainViewModel.setHomeContent() }
+            ShoppingContent(email)
+            mainViewModel.resetNestedHomeNavController()
         }
         composable<Destinations.Profile> {
+            BackHandler { mainViewModel.setHomeContent() }
             ProfileContent()
-            mainViewModel.resetNestedNavController()
+            mainViewModel.resetNestedHomeNavController()
+            mainViewModel.resetNestedShoppingNavController()
         }
 
     }

@@ -34,10 +34,8 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import com.example.coctailapp.R
-import com.example.coctailapp.ui.navigation.Destinations
 import com.example.coctailapp.ui.screens.main.content.cocktails.ErrorScreen
 import com.example.coctailapp.ui.screens.main.content.cocktails.LoadingScreen
 import com.example.coctailapp.ui.theme.PrimaryColor
@@ -51,7 +49,7 @@ import com.example.coctailapp.ui.theme.Typography
 fun CocktailsDetailsScreen(
     email: String,
     cocktailId: String,
-    navHostController: NavHostController,
+    backButtonNavigation: ()-> Unit,
     cocktailsDetailsViewModel: CocktailsDetailsViewModel = hiltViewModel()
 ) {
     cocktailsDetailsViewModel.setShoppingList(email, cocktailId)
@@ -73,14 +71,7 @@ fun CocktailsDetailsScreen(
         TopAppBar(title = {
             Text(stringResource(R.string.searchCocktail), style = Typography.bodyLarge)
         }, navigationIcon = {
-            IconButton(onClick = {
-                navHostController.navigate(Destinations.CocktailsFragment) {
-
-                    popUpTo(Destinations.CocktailsFragment) {
-                        inclusive = true
-                    }
-                }
-            }) {
+            IconButton(onClick = {backButtonNavigation()}) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_back),
                     null,

@@ -59,7 +59,7 @@ fun CocktailsScreen(
     cocktailsContentViewModel.setCurrentUserEmail(email)
 
     val navController = rememberNavController()
-    mainViewModel.setNestedNavController(navController)
+    mainViewModel.setNestedHostNavController(navController)
 
     CocktailsScreenNavigation(navController, cocktailsContentViewModel, email)
 }
@@ -246,7 +246,14 @@ fun CocktailsScreenNavigation(
         }
         composable<Destinations.CocktailsDetailsScreen>{
             val args = it.toRoute<Destinations.CocktailsDetailsScreen>()
-            CocktailsDetailsScreen(email, args.cocktailId, navController)
+            CocktailsDetailsScreen(email, args.cocktailId, {
+                navController.navigate(Destinations.CocktailsFragment) {
+
+                    popUpTo(Destinations.CocktailsFragment) {
+                        inclusive = true
+                    }
+                }
+            })
         }
     }
 

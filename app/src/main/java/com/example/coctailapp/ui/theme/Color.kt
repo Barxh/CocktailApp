@@ -7,6 +7,6 @@ val Pink80 = Color(0xFFEFB8C8)
 
 val PrimaryColor = Color(0xAAEA9922)
 val SecondaryColor = Color(0xFFFBF1BD)
-val TertiaryColor = Color(0xFFFBF1BD)
+val TertiaryColor = Color(0xFFEA9922)
 val SemiTransparentWhite = Color(0x77FFFFFF)
 val SemiTransparentGreen = Color(0x7700FF00)

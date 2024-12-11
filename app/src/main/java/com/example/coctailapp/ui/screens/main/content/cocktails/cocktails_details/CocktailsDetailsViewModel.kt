@@ -42,7 +42,7 @@ class CocktailsDetailsViewModel @Inject constructor(
     var isFavoriteCocktail: StateFlow<List<UserFavoriteCocktail>> =
         MutableStateFlow(emptyList())
 
-    private lateinit var cocktailDetails: CocktailDetailsDto
+    @Inject lateinit var cocktailDetails: CocktailDetailsDto
 
     private lateinit var _shoppingList: Flow<List<ShoppingListIngredient>>
 

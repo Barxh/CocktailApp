@@ -36,21 +36,27 @@ object AppModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build().create()
 
-    @Provides
-    @Singleton
-    fun provideFavoritesCocktailsDao(@ApplicationContext context: Context): FavoritesCocktailsDao =
-        Room.databaseBuilder(
-            context,
-            CocktailsDatabase::class.java,
-            "cocktails.DB"
-        ).fallbackToDestructiveMigration().build().favoritesCocktailsDao()
 
     @Provides
     @Singleton
-    fun provideShoppingListDao(@ApplicationContext context: Context): ShoppingListDao =
+    fun provideCocktailDetail(@ApplicationContext context: Context): CocktailsDatabase =
         Room.databaseBuilder(
             context,
             CocktailsDatabase::class.java,
             "cocktails.DB"
-        ).fallbackToDestructiveMigration().build().shoppingListDao()
+        ).fallbackToDestructiveMigration().build()
+    @Provides
+    @Singleton
+    fun provideFavoritesCocktailsDao(cocktailsDatabase: CocktailsDatabase): FavoritesCocktailsDao =
+        cocktailsDatabase.favoritesCocktailsDao()
+
+    @Provides
+    @Singleton
+    fun provideShoppingListDao(cocktailsDatabase: CocktailsDatabase): ShoppingListDao =
+        cocktailsDatabase.shoppingListDao()
+
+
+    @Provides
+    @Singleton
+    fun provideEmptyString(): String = ""
 }

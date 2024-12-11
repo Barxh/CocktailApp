@@ -1,13 +1,13 @@
 package com.example.coctailapp.model.dto
 
-import android.util.Log
 import com.example.coctailapp.model.Ingredient
+import javax.inject.Inject
 
-data class CocktailDetailsDto(
+data class CocktailDetailsDto @Inject constructor(
     val idDrink: String,
     val strAlcoholic: String,
     val strCategory: String,
-    val strDrink: String,
+    val strDrink: String ,
     val strDrinkThumb: String,
     val strGlass: String,
     val strIngredient1: String?,
@@ -43,7 +43,6 @@ data class CocktailDetailsDto(
     val strMeasure9: String?
 ){
     fun getListOfIngredients() : List<Ingredient>{
-        Log.e("Ingredient", this.toString())
         val list = mutableListOf<Ingredient>()
         if(strIngredient1!= null ){
             list.add(Ingredient(strIngredient1, strMeasure1))

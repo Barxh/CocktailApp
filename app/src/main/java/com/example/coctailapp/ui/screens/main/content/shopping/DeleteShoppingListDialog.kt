@@ -1,5 +1,6 @@
 package com.example.coctailapp.ui.screens.main.content.shopping
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -51,6 +52,7 @@ fun DeleteShoppingListDialog(email: String, shoppingListViewModel: ShoppingListV
                     Text(text = "Cancel", textAlign = TextAlign.Center, color = Color.Black)
 
                 }
+
 
                 Button(
                     onClick = {

@@ -38,4 +38,7 @@ sealed class Destinations {
 
     @Serializable
     object ShoppingFragment
+
+    @Serializable
+    object ProfileFragment
 }

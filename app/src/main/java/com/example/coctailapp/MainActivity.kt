@@ -42,13 +42,13 @@ class MainActivity : ComponentActivity() {
                             navigateToRegisterScreen = { navController.navigate(RegisterScreen) },
 
                             navigateToMainScreen = { email ->
-                                navController.navigate(MainScreen(email)){
-                                    popUpTo(LoginScreen){
+                                navController.navigate(MainScreen(email)) {
+                                    popUpTo(LoginScreen) {
                                         inclusive = true
                                     }
                                 }
                             }
-                            )
+                        )
                     }
                     composable<RegisterScreen> {
                         RegisterScreen(
@@ -59,8 +59,8 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                             },
-                            navigateToMainScreen = { email->
-                                navController.navigate(MainScreen(email)){
+                            navigateToMainScreen = { email ->
+                                navController.navigate(MainScreen(email)) {
                                     popUpTo(LoginScreen) {
                                         inclusive = true
                                     }
@@ -73,18 +73,25 @@ class MainActivity : ComponentActivity() {
                     composable<MainScreen> {
 
                         val args = it.toRoute<MainScreen>()
-                        MainScreen(userEmail = args.email)
+                        MainScreen(userEmail = args.email, {
+                            navController.navigate(LoginScreen) {
+                                popUpTo<MainScreen>() {
+                                    inclusive = true
+                                }
+                            }
+                        })
                     }
-
                 }
 
-
             }
+
 
         }
 
     }
+
 }
+
 
 
 

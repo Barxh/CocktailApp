@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream
 import android.util.Base64
 import androidx.lifecycle.viewModelScope
 import com.example.coctailapp.Constants
+import com.example.coctailapp.R
 import com.example.coctailapp.database.FavoritesCocktailsDao
 import com.example.coctailapp.model.localdb.UserFavoriteCocktail
 import kotlinx.coroutines.flow.Flow
@@ -140,10 +141,10 @@ class ProfileViewModel @Inject constructor(
 
         if (username.isEmpty()){
             _changeNameDialog.value = ChangeNameDialogEvent.HideDialog
-            _changeNameStatus.value = ChangeNameStatus.InputErrorEvent("Please enter some name")
+            _changeNameStatus.value = ChangeNameStatus.InputErrorEvent(context.getString(R.string.enterSomeName))
         }else if (username == userData.value.name){
             _changeNameDialog.value = ChangeNameDialogEvent.HideDialog
-            _changeNameStatus.value = ChangeNameStatus.InputErrorEvent("Please enter different name from you have now")
+            _changeNameStatus.value = ChangeNameStatus.InputErrorEvent(context.getString(R.string.enterDifferentName))
         }else{
             _userData.value = _userData.value.copy(name = username)
             sharedPreferences.edit {

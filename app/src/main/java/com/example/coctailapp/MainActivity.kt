@@ -1,5 +1,6 @@
 package com.example.coctailapp
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,11 +17,14 @@ import com.example.coctailapp.ui.screens.main.MainScreen
 import com.example.coctailapp.ui.screens.register.RegisterScreen
 import com.example.coctailapp.ui.theme.CoctailAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         this.setTheme(R.style.Theme_CoctailApp)
@@ -32,10 +36,15 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
+                val loggedUser = sharedPreferences.getString(Constants.LOGGED_USER, "")
 
                 NavHost(
                     navController = navController,
-                    startDestination = LoginScreen
+                    startDestination =
+                    if (loggedUser!!.isEmpty()) LoginScreen
+                    else MainScreen(
+                        loggedUser
+                    )
                 ) {
                     composable<LoginScreen> {
                         LoginScreen(

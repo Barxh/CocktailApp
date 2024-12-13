@@ -135,7 +135,7 @@ fun ProfileFragment(
     Scaffold(topBar = {
         TopAppBar(title = {
             Text(
-                "My Profile", fontWeight = FontWeight.Bold, fontSize = TextUnit(
+                stringResource(R.string.myProfile), fontWeight = FontWeight.Bold, fontSize = TextUnit(
                     22f,
                     TextUnitType.Sp,
 
@@ -192,7 +192,7 @@ fun ProfileFragment(
                             .asImageBitmap()
                     )
                     else painterResource(R.drawable.person_placeholder),
-                    contentDescription = "User image",
+                    contentDescription = stringResource(R.string.userImage),
                     modifier = Modifier
                         .size(100.dp)
                         .clip(CircleShape)

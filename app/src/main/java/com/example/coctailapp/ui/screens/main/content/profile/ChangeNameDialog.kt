@@ -17,12 +17,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.coctailapp.R
 
 @Composable
 fun ChangeNameDialog(profileViewModel: ProfileViewModel = hiltViewModel()) {
@@ -39,7 +41,7 @@ fun ChangeNameDialog(profileViewModel: ProfileViewModel = hiltViewModel()) {
     ) {
         Column (modifier = Modifier.background(Color.White).padding(20.dp)){
             Text(
-                text = "Change Name",
+                text = stringResource(R.string.changeNameDialogTitle),
                 modifier = Modifier.padding(bottom = 20.dp, start = 10.dp),
                 fontSize = TextUnit(24f, TextUnitType.Sp)
             )
@@ -58,7 +60,7 @@ fun ChangeNameDialog(profileViewModel: ProfileViewModel = hiltViewModel()) {
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White)
 
                 ) {
-                    Text(text = "Cancel", textAlign = TextAlign.Center, color = Color.Black)
+                    Text(text = stringResource(R.string.cancel), textAlign = TextAlign.Center, color = Color.Black)
 
                 }
 
@@ -72,7 +74,7 @@ fun ChangeNameDialog(profileViewModel: ProfileViewModel = hiltViewModel()) {
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White)
 
                 ) {
-                    Text(text = "Submit", textAlign = TextAlign.Center, color = Color.Red)
+                    Text(text = stringResource(R.string.submit), textAlign = TextAlign.Center, color = Color.Red)
 
                 }
             }

@@ -132,7 +132,7 @@ fun ShoppingScreen(
         Box(Modifier.fillMaxSize()) {
             if (shoppingList.value.isEmpty()) {
                 Text(
-                    text = "There are no ingredients on you shopping list",
+                    text = stringResource(R.string.emptyShoppingListMessage),
                     modifier = Modifier.align(
                         Alignment.Center
                     ),

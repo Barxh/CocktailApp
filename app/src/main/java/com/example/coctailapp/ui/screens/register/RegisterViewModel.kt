@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
+import com.example.coctailapp.Constants
 import com.example.coctailapp.R
 import com.example.coctailapp.model.User
 import com.google.gson.Gson
@@ -28,7 +29,7 @@ class RegisterViewModel @Inject constructor(private val sharedPreferences: Share
     private val _passwordError = MutableStateFlow(false)
     val passwordError = _passwordError.asStateFlow()
 
-    fun registerUser(name: String, email: String, password: String) {
+    fun registerUser(name: String, email: String, password: String, keepMeLoggedIn : Boolean) {
 
         val passwordRegex = "^(?=.+[A-Za-z])(?=.+\\d)(?=.+[@$!%*#?&.])[A-Za-z\\d@$!%*#?&.]{8,}$"
         val emailRegex = "^[A-Za-z0-9$!%*#?&.]+@[A-Za-z0-9]+\\.[a-z]+$"
@@ -76,6 +77,11 @@ class RegisterViewModel @Inject constructor(private val sharedPreferences: Share
 
         }
         _registerState.value = RegisterEvent.RegistrationSuccessful(email)
+        if (keepMeLoggedIn)
+        sharedPreferences.edit {
+            putString(Constants.LOGGED_USER, email)
+            apply()
+        }
     }
 
     fun setRegistrationState(registerEvent: RegisterEvent) {

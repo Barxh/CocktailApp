@@ -19,12 +19,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -50,7 +53,7 @@ import com.example.coctailapp.ui.components.CustomTextField
 fun LoginScreen(
     navigateToRegisterScreen: () -> Unit,
     loginViewModel: LoginViewModel = hiltViewModel(),
-    navigateToMainScreen: (email : String) -> Unit
+    navigateToMainScreen: (email: String) -> Unit
 ) {
 
     val loginEvent by loginViewModel.loginState.collectAsStateWithLifecycle()
@@ -63,15 +66,21 @@ fun LoginScreen(
     val snackbarHostState = remember {
         SnackbarHostState()
     }
+    var keepMeLoggedIn by remember {
+        mutableStateOf(false)
+    }
     LaunchedEffect(loginEvent) {
-        when(loginEvent){
+        when (loginEvent) {
             is LoginEvent.LoginSuccess -> {
-            navigateToMainScreen((loginEvent as LoginEvent.LoginSuccess).email)
-        }
+                navigateToMainScreen((loginEvent as LoginEvent.LoginSuccess).email)
+            }
+
             is LoginEvent.LoginFailed -> {
 
-                snackbarHostState.showSnackbar((loginEvent as LoginEvent.LoginFailed).message,
-                     withDismissAction = true, duration = SnackbarDuration.Indefinite)
+                snackbarHostState.showSnackbar(
+                    (loginEvent as LoginEvent.LoginFailed).message,
+                    withDismissAction = true, duration = SnackbarDuration.Indefinite
+                )
                 loginViewModel.setState(LoginEvent.LoginWait)
 
             }
@@ -122,7 +131,14 @@ fun LoginScreen(
             }
             Spacer(Modifier.height(15.dp))
 
-            CustomTextField(email, stringResource(R.string.email), colorResource(R.color.navy_green), false, KeyboardType.Email, false)
+            CustomTextField(
+                email,
+                stringResource(R.string.email),
+                colorResource(R.color.navy_green),
+                false,
+                KeyboardType.Email,
+                false
+            )
 
             Spacer(Modifier.height(15.dp))
 
@@ -134,12 +150,32 @@ fun LoginScreen(
                 KeyboardType.Password,
                 false
             )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Switch(
+                    checked = keepMeLoggedIn,
+                    onCheckedChange = {
+                        keepMeLoggedIn = !keepMeLoggedIn
+                    },
+                    colors = SwitchDefaults.colors(checkedThumbColor = colorResource(R.color.navy_green),
+                        checkedBorderColor = Color.Transparent,
+                        checkedTrackColor = Color.White,
+                        uncheckedBorderColor = Color.White,
+                        uncheckedThumbColor = Color.Gray,
+                        uncheckedTrackColor = Color.White
+                        )
+                )
+                Text(stringResource(R.string.keepMeLoggedIn), Modifier.padding(start = 15.dp), Color.White)
+            }
 
-            Spacer(Modifier.height(25.dp))
+            Spacer(Modifier.height(5.dp))
 
             Button(
                 onClick = {
-                    loginViewModel.login(email.value, password.value)
+                    loginViewModel.login(email.value, password.value, keepMeLoggedIn)
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
@@ -228,7 +264,7 @@ fun LoginScreen(
                 }
 
             }
-            Spacer(Modifier.height(50.dp))
+            Spacer(Modifier.height(30.dp))
 
             Image(
                 painter = painterResource(R.drawable.conctal_gin),

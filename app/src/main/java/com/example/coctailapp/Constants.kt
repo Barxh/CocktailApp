@@ -33,4 +33,5 @@ object Constants {
         "Y",
         "Z"
     )
+    const val LOGGED_USER = "currentLoggedInUser"
 }

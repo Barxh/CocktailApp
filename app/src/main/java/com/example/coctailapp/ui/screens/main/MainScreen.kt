@@ -45,7 +45,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 
 @OptIn(ExperimentalSerializationApi::class)
 @Composable
-fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(userEmail: String, logout : ()-> Unit, mainViewModel: MainViewModel = hiltViewModel()) {
 
     val navController = rememberNavController()
 
@@ -62,9 +62,7 @@ fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
 
-    BackHandler {
 
-    }
     Scaffold(modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar(containerColor = PrimaryColor) {
@@ -108,7 +106,7 @@ fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()
                 )
         ) {
 
-            BottomNavigationGraph(email = userEmail, navController, mainViewModel)
+            BottomNavigationGraph(email = userEmail, navController, mainViewModel, logout)
 
 
 
@@ -146,7 +144,7 @@ fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()
 
 
 @Composable
-fun BottomNavigationGraph(email : String, navController : NavHostController, mainViewModel: MainViewModel){
+fun BottomNavigationGraph(email : String, navController : NavHostController, mainViewModel: MainViewModel, logout: () -> Unit){
 
     NavHost(
         navController = navController,
@@ -165,7 +163,7 @@ fun BottomNavigationGraph(email : String, navController : NavHostController, mai
         }
         composable<Destinations.Profile> {
             BackHandler { mainViewModel.setHomeContent() }
-            ProfileContent()
+            ProfileContent(email, logout)
             mainViewModel.resetNestedHomeNavController()
             mainViewModel.resetNestedShoppingNavController()
         }

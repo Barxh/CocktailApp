@@ -1,4 +1,4 @@
-package com.example.coctailapp.ui.screens.main.content.shopping
+package com.example.coctailapp.ui.screens.main.content.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -24,26 +24,26 @@ import com.example.coctailapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeleteShoppingListDialog(email: String, shoppingListViewModel: ShoppingListViewModel = hiltViewModel()) {
+fun LogoutDialog( profileViewModel: ProfileViewModel = hiltViewModel()) {
 
     BasicAlertDialog(
         onDismissRequest = {
-            shoppingListViewModel.cancelDialog()
-        }, modifier = Modifier.background(Color.White)
+            profileViewModel.cancelLogoutDialog()
+        }
     ) {
-        Column (modifier = Modifier.padding(20.dp)){
+        Column (modifier = Modifier.background(Color.White).padding(20.dp)){
             Text(
-                text = stringResource(R.string.deleteShoppingListDialogTitle),
+                text = stringResource(R.string.logoutDialogTitle),
                 modifier = Modifier.padding(bottom = 20.dp, start = 10.dp),
                 fontSize = TextUnit(24f, TextUnitType.Sp)
             )
-            Text(text = stringResource(R.string.deleteShoppingListDialogMessage))
+            Text(text = stringResource(R.string.logoutDialogMessage))
 
 
             Row (modifier = Modifier.padding(top = 30.dp)){
                 Button(
                     onClick = {
-                        shoppingListViewModel.cancelDialog()
+                        profileViewModel.cancelLogoutDialog()
                     },
                     modifier = Modifier.fillMaxWidth(0.5f),
                     shape = RectangleShape,
@@ -57,7 +57,7 @@ fun DeleteShoppingListDialog(email: String, shoppingListViewModel: ShoppingListV
 
                 Button(
                     onClick = {
-                        shoppingListViewModel.deleteAllFromShoppingList(userId = email)
+                        profileViewModel.logout()
                     },
                     modifier = Modifier.fillMaxWidth(1f),
                     shape = RectangleShape,
@@ -69,6 +69,6 @@ fun DeleteShoppingListDialog(email: String, shoppingListViewModel: ShoppingListV
                 }
             }
         }
-
     }
+
 }

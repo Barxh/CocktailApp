@@ -14,11 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.coctailapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,11 +33,11 @@ fun DeleteShoppingListDialog(email: String, shoppingListViewModel: ShoppingListV
     ) {
         Column (modifier = Modifier.padding(20.dp)){
             Text(
-                text = "Delete shopping list",
+                text = stringResource(R.string.deleteShoppingListDialogTitle),
                 modifier = Modifier.padding(bottom = 20.dp, start = 10.dp),
                 fontSize = TextUnit(24f, TextUnitType.Sp)
             )
-            Text(text = "Are you sure you want to delete you shopping list?")
+            Text(text = stringResource(R.string.deleteShoppingListDialogMessage))
 
 
             Row (modifier = Modifier.padding(top = 30.dp)){
@@ -48,7 +50,7 @@ fun DeleteShoppingListDialog(email: String, shoppingListViewModel: ShoppingListV
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White)
 
                 ) {
-                    Text(text = "Cancel", textAlign = TextAlign.Center, color = Color.Black)
+                    Text(text = stringResource(R.string.cancel), textAlign = TextAlign.Center, color = Color.Black)
 
                 }
 
@@ -62,7 +64,7 @@ fun DeleteShoppingListDialog(email: String, shoppingListViewModel: ShoppingListV
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White)
 
                 ) {
-                    Text(text = "Yes", textAlign = TextAlign.Center, color = Color.Red)
+                    Text(text = stringResource(R.string.yes), textAlign = TextAlign.Center, color = Color.Red)
 
                 }
             }

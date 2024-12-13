@@ -18,12 +18,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -65,6 +68,9 @@ fun RegisterScreen(
     }
     val password = remember {
         mutableStateOf("")
+    }
+    var keepMeLoggedIn by remember{
+        mutableStateOf(false)
     }
     val emailIsError by registerViewModel.emailError.collectAsStateWithLifecycle()
     val passwordIsError by registerViewModel.passwordError.collectAsStateWithLifecycle()
@@ -137,13 +143,34 @@ fun RegisterScreen(
             CustomTextField(password, stringResource(R.string.password),
                 colorResource(R.color.cola_brown), true, KeyboardType.Password, passwordIsError)
 
-            Spacer(Modifier.height(25.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Switch(
+                    checked = keepMeLoggedIn,
+                    onCheckedChange = {
+                        keepMeLoggedIn = !keepMeLoggedIn
+                    },
+                    colors = SwitchDefaults.colors(checkedThumbColor = colorResource(R.color.cola_brown),
+                        checkedBorderColor = Color.Transparent,
+                        checkedTrackColor = Color.White,
+                        uncheckedBorderColor = Color.White,
+                        uncheckedThumbColor = Color.Gray,
+                        uncheckedTrackColor = Color.White
+                    )
+                )
+                Text(stringResource(R.string.keepMeLoggedIn), Modifier.padding(start = 15.dp), Color.White)
+            }
+
+            Spacer(Modifier.height(5.dp))
 
             Button(
                 onClick = {
 
 
-                    registerViewModel.registerUser(name.value, email.value, password.value)
+                    registerViewModel.registerUser(name.value, email.value, password.value, keepMeLoggedIn)
                 },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
@@ -230,7 +257,7 @@ fun RegisterScreen(
                 }
 
             }
-            Spacer(Modifier.height(30.dp))
+            Spacer(Modifier.height(10.dp))
 
             Image(
                 painter = painterResource(R.drawable.star_coctail),

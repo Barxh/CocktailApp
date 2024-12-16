@@ -75,6 +75,7 @@ fun CocktailsScreen(
     CocktailsScreenNavigation(navController, cocktailsContentViewModel, email)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CocktailsPreviewingScreen(
     navController: NavHostController,
@@ -105,28 +106,51 @@ fun CocktailsPreviewingScreen(
         toolbarTitle = stringResource(R.string.cocktails),
     ) {
 
+
+        val pullToRefreshState = rememberPullToRefreshState()
+
+
         var isRefreshing by remember {
             mutableStateOf(false)
         }
+        val scope = rememberCoroutineScope()
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            state = pullToRefreshState,
+            onRefresh = {
+                isRefreshing = true
 
-        when (fetchingStatus.value) {
-            is CocktailsFetchingEvent.ErrorEvent -> {
-                ErrorScreen((fetchingStatus.value as CocktailsFetchingEvent.ErrorEvent).errorMessage, isRefreshing
-                ) { cocktailsContentViewModel.filterCocktails() }
-            }
+                scope.launch {
+                    pullToRefreshState.animateToHidden()
+                }
 
-            CocktailsFetchingEvent.LoadingEvent -> {
                 isRefreshing = false
-                LoadingScreen()
+                cocktailsContentViewModel.filterCocktails()
 
+            },
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            when (fetchingStatus.value) {
+                is CocktailsFetchingEvent.ErrorEvent -> {
+                    ErrorScreen(
+                        (fetchingStatus.value as CocktailsFetchingEvent.ErrorEvent).errorMessage
+                    )
+                }
+
+                CocktailsFetchingEvent.LoadingEvent -> {
+                    LoadingScreen()
+
+                }
+
+                is SuccessEvent -> CocktailsGridScreen(
+                    cocktailsContentViewModel.getFilter(),
+                    cocktailsContentViewModel,
+                    navController
+                )
             }
-            is SuccessEvent -> CocktailsGridScreen(
-                cocktailsContentViewModel.getFilter(),
-                cocktailsContentViewModel,
-                navController
-            )
-        }
 
+        }
     }
 
 }
@@ -134,63 +158,40 @@ fun CocktailsPreviewingScreen(
 
 @Composable
 fun LoadingScreen() {
-    Box(Modifier.fillMaxSize()) {
-        CircularProgressIndicator(Modifier.align(Alignment.Center))
-
+    LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+        item {
+            Box(Modifier.fillMaxSize()) {
+                CircularProgressIndicator(Modifier.align(Alignment.Center))
+            }
+        }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ErrorScreen(
     errorMessage: String,
-    refreshing: Boolean = false,
-    onRefresh :()->Unit = {},
 ) {
 
     //TODO(Uradi Error skrin za filter i za cocktail details)
-    val pullToRefreshState = rememberPullToRefreshState()
 
 
-    var isRefreshing by remember {
-        mutableStateOf(refreshing)
-    }
-    val scope = rememberCoroutineScope()
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
-        state = pullToRefreshState,
-        onRefresh = {
-            isRefreshing = true
+    LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+        item {
 
-            scope.launch{
-                pullToRefreshState.animateToHidden()
-            }
-
-            isRefreshing = false
-            onRefresh()
-
-
-        },
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center){
-            item{
-
-                    Text(
-                        text = errorMessage,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.Center)
-                            .padding(20.dp),
-                        textAlign = TextAlign.Center
-                    )
-
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    text = errorMessage,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.Center)
+                        .padding(20.dp),
+                    textAlign = TextAlign.Center
+                )
             }
         }
-
-
     }
+
+
 }
 
 @Composable
@@ -218,7 +219,11 @@ fun CocktailsGridScreen(
                 )
         )
 
-        HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = Color.Gray)
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 1.dp,
+            color = Color.Gray
+        )
         LazyVerticalGrid(columns = GridCells.Fixed(2)) {
             items(cocktailsPreviewPlusFavoritesList.value) { item: CocktailsPreviewPlusFavorites ->
 

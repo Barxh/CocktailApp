@@ -22,8 +22,8 @@
     <string name="badInputErrorMessage">Please populate all fields</string>
     <string name="invalidEmail">Invalid email! Please enter valid email.</string>
     <string name="invalidPassword">Invalid password</string>
-    <string name="invalidPatternPassword">Please enter password with minimum one letter, minimum one number, minimum one special character" +
-                        " that has more than eight characters</string>
+    <string name="invalidPatternPassword">Please enter password with minimum one letter, minimum one number, minimum one special character
+        that has more than eight characters</string>
     <string name="internetErrorMessage">Sorry, something went wrong! Please check your internet connection</string>
     <string name="httpErrorMessage">Sorry, something went wrong!</string>
     <string name="emptyCocktailsListErrorMessage">Sorry, there is no cocktail with such attributes</string>
@@ -35,6 +35,21 @@
     <string name="ingredients">Ingredients</string>
     <string name="instructions">Instructions</string>
     <string name="cocktailsDetailsNotFound">Sorry, we couldn\'t found selected cocktails details</string>
+    <string name="deleteShoppingListDialogTitle">Delete shopping list</string>
+    <string name="changeNameDialogTitle">Change Name</string>
+    <string name="logoutDialogTitle">Log Out</string>
+    <string name="deleteShoppingListDialogMessage">Are you sure you want to delete you shopping list?</string>
+    <string name="logoutDialogMessage">Are you sure you want to log out from your account?</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="submit">Submit</string>
+    <string name="emptyShoppingListMessage">There are no ingredients on you shopping list</string>
+    <string name="myProfile">My Profile</string>
+    <string name="userImage">User image</string>
+    <string name="enterSomeName">Please enter some name</string>
+    <string name="enterDifferentName">Please enter different name from you have now</string>
+    <string name="keepMeLoggedIn">Keep me logged in</string>
+
 
 
 

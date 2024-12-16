@@ -43,7 +43,6 @@ import androidx.compose.ui.unit.TextUnitType
 import com.example.coctailapp.R
 import com.example.coctailapp.ui.theme.PrimaryColor
 import com.example.coctailapp.ui.theme.SecondaryColor
-import com.example.coctailapp.ui.theme.TertiaryColor
 import com.example.coctailapp.ui.theme.Typography
 
 
@@ -180,8 +179,8 @@ fun AppThemeStyle(
                     )
                 },
                 colors = TopAppBarColors(
-                    containerColor = TertiaryColor,
-                    scrolledContainerColor = TertiaryColor,
+                    containerColor = SecondaryColor,
+                    scrolledContainerColor = SecondaryColor,
                     navigationIconContentColor = Color.White,
                     titleContentColor = Color.Black,
                     actionIconContentColor = Color.Black

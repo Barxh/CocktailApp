@@ -35,4 +35,10 @@ sealed class Destinations {
 
     @Serializable
     data class CocktailsDetailsScreen(val cocktailId : String)
+
+    @Serializable
+    object ShoppingFragment
+
+    @Serializable
+    object ProfileFragment
 }

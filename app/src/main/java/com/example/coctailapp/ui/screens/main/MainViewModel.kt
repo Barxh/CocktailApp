@@ -11,7 +11,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(): ViewModel() {
 
-    private var nestedNavController : NavHostController? = null
+    private var nestedHostNavController : NavHostController? = null
+    private var nestedShoppingNavController : NavHostController? = null
     private var _selectedBottomNavigationItem  = MutableStateFlow(0)
     val selectedBottomNavigationItem = _selectedBottomNavigationItem.asStateFlow()
 
@@ -19,15 +20,30 @@ class MainViewModel @Inject constructor(): ViewModel() {
         _selectedBottomNavigationItem.value = selectedItem
     }
 
-    fun setNestedNavController(nestedNavHostController: NavHostController){
-        nestedNavController = nestedNavHostController
+    fun setNestedHostNavController(nestedNavHostController: NavHostController){
+        nestedHostNavController = nestedNavHostController
     }
-    fun resetNestedNavController(){
-        nestedNavController?.navigate(Destinations.CocktailsFragment){
+    fun setNestedShoppingNavController(nestedNavHostController: NavHostController){
+        nestedShoppingNavController = nestedNavHostController
+    }
+    fun resetNestedHomeNavController(){
+        nestedHostNavController?.navigate(Destinations.CocktailsFragment){
             popUpTo(Destinations.CocktailsFragment){
                 inclusive = true
             }
         }
+    }
+    fun resetNestedShoppingNavController(){
+        nestedShoppingNavController?.navigate(Destinations.ShoppingFragment){
+            popUpTo(Destinations.ShoppingFragment){
+                inclusive = true
+            }
+        }
+
+    }
+
+    fun setHomeContent() {
+        _selectedBottomNavigationItem.value = 0
     }
 
 

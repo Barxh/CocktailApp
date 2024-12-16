@@ -2,7 +2,9 @@ package com.example.coctailapp.ui.screens.login
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
+import com.example.coctailapp.Constants
 import com.example.coctailapp.R
 import com.example.coctailapp.model.User
 import com.google.gson.Gson
@@ -21,7 +23,7 @@ class LoginViewModel @Inject constructor(private val sharedPreferences: SharedPr
     private var _loginState = MutableStateFlow<LoginEvent>(LoginEvent.LoginWait)
     val loginState = _loginState.asStateFlow()
 
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String, keepMeLoggedIn : Boolean) {
 
 
         if (email.isEmpty() || password.isEmpty()) {
@@ -43,6 +45,12 @@ class LoginViewModel @Inject constructor(private val sharedPreferences: SharedPr
 
         if (password == user.password){
             _loginState.value = LoginEvent.LoginSuccess(email)
+            if (keepMeLoggedIn){
+                sharedPreferences.edit {
+                    putString(Constants.LOGGED_USER, email)
+                    apply()
+                }
+            }
         }else
             _loginState.value = LoginEvent.LoginFailed(context.getString(R.string.invalidPassword))
 

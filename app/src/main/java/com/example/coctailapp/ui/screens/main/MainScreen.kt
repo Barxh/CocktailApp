@@ -1,5 +1,6 @@
 package com.example.coctailapp.ui.screens.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,7 +45,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 
 @OptIn(ExperimentalSerializationApi::class)
 @Composable
-fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(userEmail: String, logout : ()-> Unit, mainViewModel: MainViewModel = hiltViewModel()) {
 
     val navController = rememberNavController()
 
@@ -59,6 +60,7 @@ fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()
             Destinations.Profile.serializer().descriptor.serialName)
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+
 
 
     Scaffold(modifier = Modifier.fillMaxSize(),
@@ -103,7 +105,8 @@ fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()
                     bottom = innerPadding.calculateBottomPadding()
                 )
         ) {
-            BottomNavigationGraph(email = userEmail, navController, mainViewModel)
+
+            BottomNavigationGraph(email = userEmail, navController, mainViewModel, logout)
 
 
 
@@ -141,7 +144,7 @@ fun MainScreen(userEmail: String, mainViewModel: MainViewModel = hiltViewModel()
 
 
 @Composable
-fun BottomNavigationGraph(email : String, navController : NavHostController, mainViewModel: MainViewModel){
+fun BottomNavigationGraph(email : String, navController : NavHostController, mainViewModel: MainViewModel, logout: () -> Unit){
 
     NavHost(
         navController = navController,
@@ -149,15 +152,20 @@ fun BottomNavigationGraph(email : String, navController : NavHostController, mai
 
     ){
         composable<Destinations.CocktailsContent> {
+            BackHandler { navController.popBackStack(navController.graph.findStartDestination(), false) }
             CocktailsScreen(email = email, mainViewModel = mainViewModel)
+            mainViewModel.resetNestedShoppingNavController()
         }
         composable<Destinations.ShoppingList> {
-            ShoppingContent()
-            mainViewModel.resetNestedNavController()
+            BackHandler { mainViewModel.setHomeContent() }
+            ShoppingContent(email)
+            mainViewModel.resetNestedHomeNavController()
         }
         composable<Destinations.Profile> {
-            ProfileContent()
-            mainViewModel.resetNestedNavController()
+            BackHandler { mainViewModel.setHomeContent() }
+            ProfileContent(email, logout)
+            mainViewModel.resetNestedHomeNavController()
+            mainViewModel.resetNestedShoppingNavController()
         }
 
     }

@@ -1,5 +1,6 @@
 package com.example.coctailapp.hilt
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
@@ -59,4 +60,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideEmptyString(): String = ""
+    @Provides
+    @Singleton
+    fun provideContentResolver(@ApplicationContext context: Context): ContentResolver = context.contentResolver
 }

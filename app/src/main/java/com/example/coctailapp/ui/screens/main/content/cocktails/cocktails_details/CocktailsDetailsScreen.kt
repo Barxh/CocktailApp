@@ -53,7 +53,7 @@ fun CocktailsDetailsScreen(
     cocktailsDetailsViewModel: CocktailsDetailsViewModel = hiltViewModel()
 ) {
     cocktailsDetailsViewModel.setShoppingList(email, cocktailId)
-    cocktailsDetailsViewModel.setIsFavoriteCocktailStateFlow(cocktailId)
+    cocktailsDetailsViewModel.setIsFavoriteCocktailStateFlow(email, cocktailId)
     val cocktailDetailsFetchingStatus =
         cocktailsDetailsViewModel.cocktailDetailsFetchingStatus.collectAsStateWithLifecycle()
 
@@ -69,7 +69,7 @@ fun CocktailsDetailsScreen(
 
     Scaffold(topBar = {
         TopAppBar(title = {
-            Text(stringResource(R.string.searchCocktail), style = Typography.bodyLarge)
+            Text(stringResource(R.string.searchCocktail), style = Typography.bodyLarge, fontWeight = FontWeight.Bold)
         }, navigationIcon = {
             IconButton(onClick = {backButtonNavigation()}) {
                 Icon(

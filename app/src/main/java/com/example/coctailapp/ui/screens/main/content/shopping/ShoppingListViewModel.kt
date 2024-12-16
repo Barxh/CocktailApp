@@ -7,8 +7,6 @@ import com.example.coctailapp.model.Ingredient
 import com.example.coctailapp.model.ShoppingListModel
 import com.example.coctailapp.model.localdb.ShoppingListIngredient
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -93,23 +91,10 @@ class ShoppingListViewModel @Inject constructor(private val shoppingListDao: Sho
     }
 
     fun deleteUnwantedIngredients() {
-
-
         viewModelScope.launch {
-
-
-            unwantedIngredients.value.map { i ->
-                async {
-                    shoppingListDao.deleteShoppingListIngredient(i)
-                }
-
-            }.awaitAll()
-
-            createShoppingListForLazyColumn()
+            shoppingListDao.deleteListOfShoppingIngredients(unwantedIngredients.value)
             _unwantedIngredients.value = emptyList()
         }
-
-
     }
 
     fun deleteAllFromShoppingList(userId: String){

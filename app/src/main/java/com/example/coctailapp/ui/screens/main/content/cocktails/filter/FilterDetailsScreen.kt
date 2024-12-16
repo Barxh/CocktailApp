@@ -95,38 +95,39 @@ fun FilterScreenDetails(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            when (fetchingState.value) {
+            Column {
+                when (fetchingState.value) {
 
-                is FilterFetchingEvent.ErrorEvent -> {
-                    ErrorScreen((fetchingState.value as FilterFetchingEvent.ErrorEvent).errorMessage)
+                    is FilterFetchingEvent.ErrorEvent -> {
+                        ErrorScreen((fetchingState.value as FilterFetchingEvent.ErrorEvent).errorMessage)
 
-                }
+                    }
 
-                FilterFetchingEvent.LoadingEvent -> LoadingScreen()
+                    FilterFetchingEvent.LoadingEvent -> LoadingScreen()
 
 
-                is FilterFetchingEvent.SuccessEvent -> {
+                    is FilterFetchingEvent.SuccessEvent -> {
 
-                    FilterDetailsDataFetchingSuccessScreen(
-                        filterType = cocktailsContentViewModel.getFilterType().toTitle(),
-                        list = (fetchingState.value as FilterFetchingEvent.SuccessEvent).filtersList,
-                        onItemClicked = { filter ->
-                            cocktailsContentViewModel.setFilter(filter)
-                            navController.navigate(Destinations.CocktailsFragment) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    inclusive = true
-                                    saveState = false
+                        FilterDetailsDataFetchingSuccessScreen(
+                            filterType = cocktailsContentViewModel.getFilterType().toTitle(),
+                            list = (fetchingState.value as FilterFetchingEvent.SuccessEvent).filtersList,
+                            onItemClicked = { filter ->
+                                cocktailsContentViewModel.setFilter(filter)
+                                navController.navigate(Destinations.CocktailsFragment) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        inclusive = true
+                                        saveState = false
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = false
                                 }
-                                launchSingleTop = true
-                                restoreState = false
                             }
-                        }
-                    )
+                        )
 
+                    }
                 }
             }
         }
-
     }
 
 }
@@ -139,7 +140,7 @@ fun FilterDetailsDataFetchingSuccessScreen(
 ) {
 
     Text(
-        stringResource(R.string.filterBy)+ " " + filterType,
+        stringResource(R.string.filterBy) + " " + filterType,
         modifier = Modifier
             .fillMaxWidth()
             .padding(

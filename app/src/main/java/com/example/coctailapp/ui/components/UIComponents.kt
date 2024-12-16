@@ -157,6 +157,7 @@ fun AppThemeStyle(
     toolbarActions: @Composable () -> Unit = {},
     toolbarNavigation: @Composable () -> Unit = {},
     snackBarHostState: SnackbarHostState? = null,
+    floatingButton: @Composable ()-> Unit = {},
     content: @Composable () -> Unit
 
 
@@ -167,6 +168,9 @@ fun AppThemeStyle(
         snackbarHost = {
             if (snackBarHostState!=null)
                 SnackbarHost(snackBarHostState)
+        },
+        floatingActionButton = {
+            floatingButton()
         },
         topBar = {
             TopAppBar(

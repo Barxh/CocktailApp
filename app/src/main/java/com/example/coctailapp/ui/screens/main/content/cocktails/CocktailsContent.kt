@@ -368,12 +368,7 @@ fun CocktailsScreenNavigation(
         composable<Destinations.CocktailsDetailsScreen> {
             val args = it.toRoute<Destinations.CocktailsDetailsScreen>()
             CocktailsDetailsScreen(email, args.cocktailId, {
-                navController.navigate(Destinations.CocktailsFragment) {
-
-                    popUpTo(Destinations.CocktailsFragment) {
-                        inclusive = true
-                    }
-                }
+                navController.navigateUp()
             })
         }
     }

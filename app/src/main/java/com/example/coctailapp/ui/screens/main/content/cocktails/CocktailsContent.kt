@@ -1,5 +1,6 @@
 package com.example.coctailapp.ui.screens.main.content.cocktails
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,13 +12,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,10 +30,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,6 +66,7 @@ import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterScr
 import com.example.coctailapp.ui.screens.main.content.cocktails.filter.FilterScreenDetails
 import com.example.coctailapp.ui.screens.main.content.cocktails.search.SearchScreen
 import com.example.coctailapp.ui.theme.SemiTransparentGreen
+import com.example.coctailapp.ui.theme.TertiaryColor
 import kotlinx.coroutines.launch
 
 
@@ -75,6 +84,8 @@ fun CocktailsScreen(
     CocktailsScreenNavigation(navController, cocktailsContentViewModel, email)
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CocktailsPreviewingScreen(
     navController: NavHostController,
@@ -83,7 +94,15 @@ fun CocktailsPreviewingScreen(
     cocktailsContentViewModel.filterCocktails()
 
 
+    var lastVisibleItem by rememberSaveable {
+        mutableIntStateOf(1)
+    }
+    val scope = rememberCoroutineScope()
+    val lazyGridState = rememberLazyGridState()
     val fetchingStatus = cocktailsContentViewModel.dataFetchingEvent.collectAsStateWithLifecycle()
+    val showFloatingButton by remember {
+        derivedStateOf { lazyGridState.firstVisibleItemIndex }
+    }
     AppThemeStyle(
         toolbarActions = {
             IconButton(onClick = { navController.navigate(Destinations.SearchFragment) }) {
@@ -103,30 +122,81 @@ fun CocktailsPreviewingScreen(
             }
         },
         toolbarTitle = stringResource(R.string.cocktails),
+        floatingButton = {
+            if (showFloatingButton >= 10) {
+                FloatingActionButton(
+                    onClick = {
+                        scope.launch {
+                            lazyGridState.animateScrollToItem(1)
+                        }
+                        lastVisibleItem = 1
+
+                    }, containerColor = TertiaryColor,
+                    shape = CircleShape
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_up),
+                        contentDescription = null
+                    )
+                }
+            }
+        }
     ) {
+
+
+        val pullToRefreshState = rememberPullToRefreshState()
+
 
         var isRefreshing by remember {
             mutableStateOf(false)
         }
 
-        when (fetchingStatus.value) {
-            is CocktailsFetchingEvent.ErrorEvent -> {
-                ErrorScreen((fetchingStatus.value as CocktailsFetchingEvent.ErrorEvent).errorMessage, isRefreshing
-                ) { cocktailsContentViewModel.filterCocktails() }
-            }
 
-            CocktailsFetchingEvent.LoadingEvent -> {
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            state = pullToRefreshState,
+            onRefresh = {
+                isRefreshing = true
+
+                scope.launch {
+                    pullToRefreshState.animateToHidden()
+                }
+
                 isRefreshing = false
-                LoadingScreen()
+                cocktailsContentViewModel.filterCocktails()
 
+            },
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            when (fetchingStatus.value) {
+                is CocktailsFetchingEvent.ErrorEvent -> {
+                    ErrorScreen(
+                        (fetchingStatus.value as CocktailsFetchingEvent.ErrorEvent).errorMessage
+                    )
+                }
+
+                CocktailsFetchingEvent.LoadingEvent -> {
+                    LoadingScreen()
+
+                }
+
+                is SuccessEvent -> {
+
+                    CocktailsGridScreen(
+                        cocktailsContentViewModel.getFilter(),
+                        cocktailsContentViewModel,
+                        navController,
+                        lazyGridState
+                    ) {
+                        lastVisibleItem = lazyGridState.firstVisibleItemIndex
+                    }
+                    scope.launch {
+                        lazyGridState.scrollToItem(lastVisibleItem)
+                    }
+                }
             }
-            is SuccessEvent -> CocktailsGridScreen(
-                cocktailsContentViewModel.getFilter(),
-                cocktailsContentViewModel,
-                navController
-            )
         }
-
     }
 
 }
@@ -134,74 +204,52 @@ fun CocktailsPreviewingScreen(
 
 @Composable
 fun LoadingScreen() {
-    Box(Modifier.fillMaxSize()) {
-        CircularProgressIndicator(Modifier.align(Alignment.Center))
-
+    LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+        item {
+            Box(Modifier.fillMaxSize()) {
+                CircularProgressIndicator(Modifier.align(Alignment.Center))
+            }
+        }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ErrorScreen(
     errorMessage: String,
-    refreshing: Boolean = false,
-    onRefresh :()->Unit = {},
 ) {
 
-    //TODO(Uradi Error skrin za filter i za cocktail details)
-    val pullToRefreshState = rememberPullToRefreshState()
 
+    LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+        item {
 
-    var isRefreshing by remember {
-        mutableStateOf(refreshing)
-    }
-    val scope = rememberCoroutineScope()
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
-        state = pullToRefreshState,
-        onRefresh = {
-            isRefreshing = true
-
-            scope.launch{
-                pullToRefreshState.animateToHidden()
-            }
-
-            isRefreshing = false
-            onRefresh()
-
-
-        },
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center){
-            item{
-
-                    Text(
-                        text = errorMessage,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.Center)
-                            .padding(20.dp),
-                        textAlign = TextAlign.Center
-                    )
-
+            Box(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    text = errorMessage,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.Center)
+                        .padding(20.dp),
+                    textAlign = TextAlign.Center
+                )
             }
         }
-
-
     }
+
+
 }
 
 @Composable
 fun CocktailsGridScreen(
     filter: String,
     cocktailsContentViewModel: CocktailsContentViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    lazyGridState: LazyGridState,
+    rememberLastVisibleElement: () -> Unit
 ) {
 
     val cocktailsPreviewPlusFavoritesList =
         cocktailsContentViewModel.cocktailsPreviewPlusFavorites.collectAsStateWithLifecycle()
+
 
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -218,10 +266,13 @@ fun CocktailsGridScreen(
                 )
         )
 
-        HorizontalDivider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = Color.Gray)
-        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 1.dp,
+            color = Color.Gray
+        )
+        LazyVerticalGrid(columns = GridCells.Fixed(2), state = lazyGridState) {
             items(cocktailsPreviewPlusFavoritesList.value) { item: CocktailsPreviewPlusFavorites ->
-
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -231,6 +282,7 @@ fun CocktailsGridScreen(
                         .padding(5.dp)
                         .clickable {
                             navController.navigate(Destinations.CocktailsDetailsScreen(item.idDrink))
+                            rememberLastVisibleElement()
                         }
                 ) {
                     AsyncImage(
@@ -316,12 +368,7 @@ fun CocktailsScreenNavigation(
         composable<Destinations.CocktailsDetailsScreen> {
             val args = it.toRoute<Destinations.CocktailsDetailsScreen>()
             CocktailsDetailsScreen(email, args.cocktailId, {
-                navController.navigate(Destinations.CocktailsFragment) {
-
-                    popUpTo(Destinations.CocktailsFragment) {
-                        inclusive = true
-                    }
-                }
+                navController.navigateUp()
             })
         }
     }

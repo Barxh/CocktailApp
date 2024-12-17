@@ -19,7 +19,7 @@ interface FavoritesCocktailsDao {
     @Query("SELECT * FROM FAVORITE_COCKTAIL WHERE userId = :email")
     fun getUserFavoritesCocktails(email: String): Flow<List<UserFavoriteCocktail>>
 
-    @Query("SELECT * FROM FAVORITE_COCKTAIL WHERE idDrink = :cocktailId")
-    fun getUserFavoriteCocktailById(cocktailId: String): Flow<List<UserFavoriteCocktail>>
+    @Query("SELECT * FROM FAVORITE_COCKTAIL WHERE idDrink = :cocktailId AND userId = :email")
+    fun getUserFavoriteCocktailById(email: String, cocktailId: String): Flow<List<UserFavoriteCocktail>>
 
 }

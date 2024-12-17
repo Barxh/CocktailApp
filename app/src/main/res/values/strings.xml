@@ -29,7 +29,7 @@
     <string name="emptyCocktailsListErrorMessage">Sorry, there is no cocktail with such attributes</string>
     <string name="filterBy">Filter cocktails by   </string>
     <string name="searchError">Please enter your search</string>
-    <string name="searchCocktail">Search cocktail</string>
+    <string name="searchCocktail">Cocktails details</string>
     <string name="category">Category</string>
     <string name="glassType">Glass type</string>
     <string name="ingredients">Ingredients</string>

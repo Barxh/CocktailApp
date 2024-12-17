@@ -20,7 +20,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,6 +48,7 @@ import com.example.coctailapp.ui.screens.main.content.cocktails.LoadingScreen
 import com.example.coctailapp.ui.theme.PrimaryColor
 import com.example.coctailapp.ui.theme.SecondaryColor
 import com.example.coctailapp.ui.theme.Typography
+import kotlinx.coroutines.launch
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -53,7 +61,7 @@ fun CocktailsDetailsScreen(
     cocktailsDetailsViewModel: CocktailsDetailsViewModel = hiltViewModel()
 ) {
     cocktailsDetailsViewModel.setShoppingList(email, cocktailId)
-    cocktailsDetailsViewModel.setIsFavoriteCocktailStateFlow(cocktailId)
+    cocktailsDetailsViewModel.setIsFavoriteCocktailStateFlow(email, cocktailId)
     val cocktailDetailsFetchingStatus =
         cocktailsDetailsViewModel.cocktailDetailsFetchingStatus.collectAsStateWithLifecycle()
 
@@ -69,7 +77,7 @@ fun CocktailsDetailsScreen(
 
     Scaffold(topBar = {
         TopAppBar(title = {
-            Text(stringResource(R.string.searchCocktail), style = Typography.bodyLarge)
+            Text(stringResource(R.string.searchCocktail), style = Typography.bodyLarge, fontWeight = FontWeight.Bold)
         }, navigationIcon = {
             IconButton(onClick = {backButtonNavigation()}) {
                 Icon(
@@ -81,7 +89,31 @@ fun CocktailsDetailsScreen(
             }
         }, colors = TopAppBarDefaults.topAppBarColors(containerColor = SecondaryColor))
     }) {
-        Column {
+        val pullToRefreshState = rememberPullToRefreshState()
+
+
+        var isRefreshing by remember {
+            mutableStateOf(false)
+        }
+        val scope = rememberCoroutineScope()
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            state = pullToRefreshState,
+            onRefresh = {
+                isRefreshing = true
+
+                scope.launch {
+                    pullToRefreshState.animateToHidden()
+                }
+
+                isRefreshing = false
+                cocktailsDetailsViewModel.getCocktailDetails(id = cocktailId)
+
+            },
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+
 
 
             when (cocktailDetailsFetchingStatus.value) {

@@ -3,14 +3,23 @@ package com.example.coctailapp.ui.screens.main.content.cocktails.filter
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +38,9 @@ import com.example.coctailapp.ui.navigation.Destinations
 import com.example.coctailapp.ui.screens.main.content.cocktails.CocktailsContentViewModel
 import com.example.coctailapp.ui.screens.main.content.cocktails.ErrorScreen
 import com.example.coctailapp.ui.screens.main.content.cocktails.LoadingScreen
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterScreenDetails(
     navController: NavController,
@@ -60,37 +71,63 @@ fun FilterScreenDetails(
     ) {
 
         filterViewModel.fetchFilterData(cocktailsContentViewModel.getFilterType())
-        when (fetchingState.value) {
-
-            is FilterFetchingEvent.ErrorEvent -> {
-                ErrorScreen((fetchingState.value as FilterFetchingEvent.ErrorEvent).errorMessage)
-
-            }
-
-            FilterFetchingEvent.LoadingEvent -> LoadingScreen()
+        val pullToRefreshState = rememberPullToRefreshState()
 
 
-            is FilterFetchingEvent.SuccessEvent -> {
+        var isRefreshing by remember {
+            mutableStateOf(false)
+        }
+        val scope = rememberCoroutineScope()
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            state = pullToRefreshState,
+            onRefresh = {
+                isRefreshing = true
 
-                FilterDetailsDataFetchingSuccessScreen(
-                    filterType = cocktailsContentViewModel.getFilterType().toTitle(),
-                    list = (fetchingState.value as FilterFetchingEvent.SuccessEvent).filtersList,
-                    onItemClicked = { filter ->
-                        cocktailsContentViewModel.setFilter(filter)
-                        navController.navigate(Destinations.CocktailsFragment) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                inclusive = true
-                                saveState = false
-                            }
-                            launchSingleTop = true
-                            restoreState = false
-                        }
+                scope.launch {
+                    pullToRefreshState.animateToHidden()
+                }
+
+                isRefreshing = false
+                filterViewModel.fetchFilterData(cocktailsContentViewModel.getFilterType())
+
+            },
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Column {
+                when (fetchingState.value) {
+
+                    is FilterFetchingEvent.ErrorEvent -> {
+                        ErrorScreen((fetchingState.value as FilterFetchingEvent.ErrorEvent).errorMessage)
+
                     }
-                )
 
+                    FilterFetchingEvent.LoadingEvent -> LoadingScreen()
+
+
+                    is FilterFetchingEvent.SuccessEvent -> {
+
+                        FilterDetailsDataFetchingSuccessScreen(
+                            filterType = cocktailsContentViewModel.getFilterType().toTitle(),
+                            list = (fetchingState.value as FilterFetchingEvent.SuccessEvent).filtersList,
+                            onItemClicked = { filter ->
+                                cocktailsContentViewModel.setFilter(filter)
+                                navController.navigate(Destinations.CocktailsFragment) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        inclusive = true
+                                        saveState = false
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = false
+                                }
+                            }
+                        )
+
+                    }
+                }
             }
         }
-
     }
 
 }
@@ -103,7 +140,7 @@ fun FilterDetailsDataFetchingSuccessScreen(
 ) {
 
     Text(
-        stringResource(R.string.filterBy)+ " " + filterType,
+        stringResource(R.string.filterBy) + " " + filterType,
         modifier = Modifier
             .fillMaxWidth()
             .padding(

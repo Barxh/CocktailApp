@@ -125,9 +125,9 @@ class CocktailsDetailsViewModel @Inject constructor(
 
     }
 
-    fun setIsFavoriteCocktailStateFlow(id: String) {
+    fun setIsFavoriteCocktailStateFlow(email: String, id: String) {
         favoriteCocktailFlow =
-            favoritesCocktailsDao.getUserFavoriteCocktailById(cocktailId = id)
+            favoritesCocktailsDao.getUserFavoriteCocktailById(email = email, cocktailId = id)
 
             isFavoriteCocktail = favoriteCocktailFlow.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 

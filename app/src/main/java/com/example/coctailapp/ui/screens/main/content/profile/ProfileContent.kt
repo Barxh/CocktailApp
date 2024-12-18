@@ -3,7 +3,6 @@ package com.example.coctailapp.ui.screens.main.content.profile
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -30,16 +29,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -56,6 +55,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
 import com.example.coctailapp.R
 import com.example.coctailapp.model.localdb.UserFavoriteCocktail
 import com.example.coctailapp.ui.navigation.Destinations
@@ -84,10 +84,7 @@ fun ProfileFragment(
     logout: () -> Unit,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val launcher =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            profileViewModel.saveUserImage(uri)
-        }
+
     val snackBarHostState = SnackbarHostState()
 
     profileViewModel.setCurrentUser(email)
@@ -96,7 +93,11 @@ fun ProfileFragment(
     val logoutDialog = profileViewModel.logoutDialog.collectAsStateWithLifecycle()
     val changeNameDialog = profileViewModel.changeNameDialog.collectAsStateWithLifecycle()
     val changeNameStatus = profileViewModel.changeNameStatus.collectAsStateWithLifecycle()
-
+    val userImage by profileViewModel.userImage.collectAsStateWithLifecycle()
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            profileViewModel.saveUserImage(uri)
+        }
     when (changeNameDialog.value) {
         ChangeNameDialogEvent.HideDialog -> {
             //Do nothing
@@ -135,11 +136,14 @@ fun ProfileFragment(
     Scaffold(topBar = {
         TopAppBar(title = {
             Text(
-                stringResource(R.string.myProfile), fontWeight = FontWeight.Bold, fontSize = TextUnit(
+                stringResource(R.string.myProfile),
+                fontWeight = FontWeight.Bold,
+                fontSize = TextUnit(
                     22f,
                     TextUnitType.Sp,
 
-                    ), style = Typography.bodyLarge
+                    ),
+                style = Typography.bodyLarge
             )
         },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = SecondaryColor),
@@ -186,12 +190,13 @@ fun ProfileFragment(
         ) {
             Row(Modifier.padding(10.dp)) {
 
-                Image(
-                    painter = if (currentUserData.value.image != null) BitmapPainter(
-                        profileViewModel.decodeBase64ToBitmap(currentUserData.value.image!!)
-                            .asImageBitmap()
-                    )
-                    else painterResource(R.drawable.person_placeholder),
+
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(userImage)
+                        .build(),
+                    error = painterResource(R.drawable.person_placeholder),
+                    placeholder = painterResource(R.drawable.person_placeholder),
                     contentDescription = stringResource(R.string.userImage),
                     modifier = Modifier
                         .size(100.dp)
@@ -209,8 +214,6 @@ fun ProfileFragment(
                         modifier = Modifier.padding(top = 15.dp),
                         color = Color.Gray
                     )
-
-
                 }
 
 

@@ -59,6 +59,7 @@ fun CustomTextField(
 
     TextField(
 
+
         value = state.value,
         onValueChange = {  state.value = it },
         label = {
@@ -69,7 +70,9 @@ fun CustomTextField(
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
-        }, visualTransformation =
+        },
+        singleLine = true,
+        visualTransformation =
         if (isPasswordField && !passwordVisible)
             PasswordVisualTransformation()
         else VisualTransformation.None,

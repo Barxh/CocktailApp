@@ -237,7 +237,7 @@ fun ProfileFragment(
                             modifier = Modifier.height(200.dp),
                             contentScale = ContentScale.Crop
                         )
-                        Text(text = item.cocktailName, textAlign = TextAlign.Center)
+                        Text(text = item.cocktailName, textAlign = TextAlign.Center, maxLines = 2, minLines = 2)
 
                         IconButton(onClick = {
                             profileViewModel.deleteUserFavorites(

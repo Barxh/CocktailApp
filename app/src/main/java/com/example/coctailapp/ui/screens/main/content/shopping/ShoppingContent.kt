@@ -217,7 +217,9 @@ fun ShoppingScreen(
                                     )
                                 )
                                 Text(
-                                    text = "${ingredient.ingredientsName} ${ingredient.ingredientMeasure}",
+                                    text = if(ingredient.ingredientMeasure!=null)
+                                        "${ingredient.ingredientsName} ${ingredient.ingredientMeasure}"
+                                    else ingredient.ingredientsName,
                                     modifier = Modifier.padding(start = 10.dp),
                                     textDecoration = if (unwantedIngredients.value.contains(
                                             ShoppingListIngredient(

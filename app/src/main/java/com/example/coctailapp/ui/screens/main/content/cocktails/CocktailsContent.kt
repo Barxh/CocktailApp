@@ -291,7 +291,7 @@ fun CocktailsGridScreen(
                         modifier = Modifier.height(250.dp),
                         contentScale = ContentScale.Crop
                     )
-                    Text(text = item.cocktailName, textAlign = TextAlign.Center)
+                    Text(text = item.cocktailName, textAlign = TextAlign.Center, maxLines = 2, minLines = 2)
 
                     IconButton(onClick = {
                         cocktailsContentViewModel.deleteOrInsertToUserFavorites(

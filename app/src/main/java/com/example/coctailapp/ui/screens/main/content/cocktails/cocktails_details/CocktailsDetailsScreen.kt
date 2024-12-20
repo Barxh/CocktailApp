@@ -144,7 +144,8 @@ fun CocktailsDetailsScreen(
                                             .cocktailDetails.strDrink,
                                         modifier = Modifier.align(Alignment.CenterStart),
                                         fontWeight = FontWeight.Bold,
-                                        fontSize = TextUnit(26f, TextUnitType.Sp)
+                                        fontSize = TextUnit(26f, TextUnitType.Sp),
+
                                     )
 
                                     IconButton(onClick = {

@@ -38,7 +38,7 @@
     <string name="deleteShoppingListDialogTitle">Delete shopping list</string>
     <string name="changeNameDialogTitle">Change Name</string>
     <string name="logoutDialogTitle">Log Out</string>
-    <string name="deleteShoppingListDialogMessage">Are you sure you want to delete you shopping list?</string>
+    <string name="deleteShoppingListDialogMessage">Are you sure you want to delete your shopping list?</string>
     <string name="logoutDialogMessage">Are you sure you want to log out from your account?</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
